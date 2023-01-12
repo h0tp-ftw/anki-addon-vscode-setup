@@ -1,0 +1,1 @@
+# anki-addon-dev-template
