@@ -1,0 +1,14 @@
+{
+    // TODO: adjust paths based on your setup
+    "folders": [
+        {
+            "path": "/home/jakubfidler/Documents/programming/anki_addons/anki-addon-dev-template"
+        },
+        {
+            "path": "/home/jakubfidler/.virtualenvs/anki_21_55/lib/python3.10/site-packages/anki"
+        },
+        {
+            "path": "/home/jakubfidler/.virtualenvs/anki_21_55/lib/python3.10/site-packages/aqt"
+        },
+    ],
+}

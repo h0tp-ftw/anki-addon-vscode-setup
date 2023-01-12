@@ -1,0 +1,5 @@
+anki==2.1.55
+aqt==2.1.55
+pyqt5==5.15.5
+pyqtwebengine==5.15.5
+pyqtwebengine-qt5==5.15.2
