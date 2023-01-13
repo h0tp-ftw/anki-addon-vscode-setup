@@ -11,6 +11,7 @@ To test this setup standalone:
 - start Anki in debug mode as shown in the video below
 
 To use this setup with the ankihub add-on, just copy all files (except for `requirements.txt` and `ankihub/__init__.py`) into your ankihub add-on folder and adjust the paths and the symlink mentioned above.
+You also don't need to copy the `anki_base` directory, as it will be generated when you launch anki with the `-b` flag, which is configured in `vscode/launch.json`. You will still need to create the symlink from `ankihub` to `anki_base/addons21/ankihub`.
 
 
 ## Screenshots and recordings
