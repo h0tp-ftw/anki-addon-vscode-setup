@@ -1,9 +1,9 @@
 # Anki - VS Code Debugging Integration
-@RisingOrange's VSCode dev setup for Anki add-ons, forked by me to: 
+[@RisingOrange](https://github.com/RisingOrange)'s VSCode dev setup for Anki add-ons, forked by me to: 
 - port to newer versions and Qt6
 - use for other add-ons
 
-Huge thanks to RisingOrange for this. I don't know how to DM on GitHub - I wanted to send a thank-you message.
+Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't know how to DM on GitHub - I wanted to send a thank-you message.
 
 ## About this project
 - Great for debugging your add-on development in Anki! (debugging, variable inspections and code changes can be done **live**)
