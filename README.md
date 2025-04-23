@@ -2,6 +2,7 @@
 [@RisingOrange](https://github.com/RisingOrange)'s VSCode dev setup for Anki add-ons, forked by me to: 
 - port to newer versions and Qt6
 - use for other add-ons
+- make it easy to set up!
 
 Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't know how to DM on GitHub - I wanted to send a thank-you message.
 
