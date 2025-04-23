@@ -10,19 +10,22 @@ Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't
 - Allows for a virtual environment with a new installation of Anki separate from your installation.
 - Cross-platform compatible as long as you have **VS Code** and **pip** available.
 
+## Screenshot of me using it in Ankimon
+![Screenshot](https://raw.githubusercontent.com/h0tp-ftw/anki-addon-vscode-setup/refs/heads/master/Ankimon%20screenshot.png)
+
 # How to use
 ## Setting up virtual Python environment
 - clone this repository to your device 
-`git clone https://github.com/h0tp-ftw/anki-addon-vscode-setup.git /PATH/TO/DIRECTORY/`
+```git clone https://github.com/h0tp-ftw/anki-addon-vscode-setup.git /PATH/TO/DIRECTORY/```
 - open the folder at /PATH/TO/DIRECTORY/anki-addon-vscode-setup in VS Code, then open the terminal in VS Code
 - create a new python virtual environment in the folder
-`python3 -m venv venv`
+```python3 -m venv venv```
 Here, the first venv is the command for a **virtual environment**, and second venv is for the **folder name**.
 - activate this virtual environment
 LINUX / MAC : `source venv/bin/activate`
 WINDOWS : `venv\Scripts\activate`
 - install the necessary packages via pip
-`pip install -r requirements.txt`
+```pip install -r requirements.txt```
 - try running Anki in terminal by using command `anki`, it should work and it should be separate than your usual Anki installation ! 
 
 ## Setting up addon environment
@@ -47,9 +50,6 @@ Once you learn about debugging, it can be very valuable to get your code tested 
 - Anki addons can change thousands of files, so you should use this to test code changes and use another workspace to commit changes. Directly committing from this can be messy.
 - Make sure to test your changes in native Anki before making any commits!
 - ALWAYS debug using the init file! You can still debug other files, e.g. adding breakpoints and checking variables, but you have to start debugging at init file. 
-
-## Screenshot of me using it in Ankimon
-![Screenshot](https://raw.githubusercontent.com/h0tp-ftw/anki-addon-vscode-setup/refs/heads/master/Ankimon%20screenshot.png)
 
 ## Screenshots and recordings from @RisingOrange
 <img src="https://user-images.githubusercontent.com/31575114/212190695-3b80024e-2de5-4a5b-ba7e-921a65ad365c.png" width=500>
