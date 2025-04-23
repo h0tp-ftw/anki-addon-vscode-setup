@@ -64,7 +64,7 @@ Once you learn about debugging, it can be very valuable to get your code tested 
 
 ## Limitations
 - Anki addons can change thousands of files, so you should use this to test code changes and use another workspace to commit changes. Directly committing from this can be messy.
-- Make sure to test your changes in native Anki before making any commits!
+- Make sure to test your changes in native Anki before making any commits! It is in a Python environment that is partially isolated from the system, so behaviour can be slightly different than system installations.
 - ALWAYS debug using the init file! You can still debug other files, e.g. adding breakpoints and checking variables, but you have to start debugging at init file. 
 
 If you see errors in package importing, likely that you didn't install all packages
