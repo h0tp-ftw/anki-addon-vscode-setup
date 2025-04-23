@@ -1,36 +1,19 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
-            "name": "Anki",
-            "type": "python",
+            "name": "Python 2.7 Anki",
+            "type": "debugpy",
             "request": "launch",
             "stopOnEntry": false,
-            // TODO: Adjust path based on your setup
-            "program": "~/.virtualenvs/anki_21_55/bin/anki",
+            "program": "/PATH/TO/venv/bin/anki", // <- Path to your runanki location
             "cwd": "${workspaceRoot}",
-            "env": {
-                // "ANKIHUB_APP_URL": "https://staging.ankihub.net",
-                // "ANKIHUB_APP_URL": "https://fake.ankihub.net",
-                // "ANKIHUB_APP_URL": "http://0.0.0.0:8000",
-                // it's good to have this enabled so that the add-on does not break on future Anki versions
-                "DISABLE_QT5_COMPAT": "1",
-                // fixes visual errors on older Anki versions on linux
-                "QTWEBENGINE_CHROMIUM_FLAGS": "--no-sandbox"
-            },
+            "env": {},
             "args": [
                 "-b",
-                "anki_base",
-            ],
-            "purpose": [
-                // with this setting tests will use justMyCode=false in debug mode
-                "debug-test",
-                "debug-in-terminal",
-            ],
-            "justMyCode": false,
-        },
+                "/PATH/FOR/INSTALLATION"], // <- Pick where this Anki installation files should be stored
+            "envFile": "${workspaceRoot}/.env"
+        }
     ]
 }
