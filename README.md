@@ -20,7 +20,7 @@ Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't
 
 ```git clone https://github.com/h0tp-ftw/anki-vscode.git /PATH/TO/DIRECTORY/```
 
-- open the folder at /PATH/TO/DIRECTORY/anki-addon-vscode-setup in VS Code, then open the terminal in VS Code
+- open the folder at /PATH/TO/DIRECTORY/anki-vscode in VS Code, then open the terminal in VS Code
 
 - create a new python virtual environment in the folder
 
@@ -41,7 +41,8 @@ WINDOWS : `venv\Scripts\activate`
 ## Setting up addon environment
 - open Anki in terminal, and go to Add-Ons -> View Files to see where addons are stored (addons21).
 
-- in this folder, either **add a symlink to your addon folder**, or a **copied folder of your addon**, or a **GitHub clone/branch of your addon** - it is upto you. 
+- in this folder, either **add a symlink to your addon folder**, or a **copied folder of your addon**, or a **GitHub clone/branch of your addon** - it is upto you.
+
 #1 allows to sync changes with your native install, #2 is safer but you may have different environment or configurations, and #3 gives you great tracking but all addon files will be synced (sometimes thousands of changes can happen).
 
 - now open the folder in VS Code. So you can open addon folder directly or the folder above it, whatever is convenient for you. 
