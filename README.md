@@ -18,7 +18,7 @@ Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't
 ## Setting up virtual Python environment
 - clone this repository to your device
 
-```git clone https://github.com/h0tp-ftw/anki-addon-vscode-setup.git /PATH/TO/DIRECTORY/```
+```git clone https://github.com/h0tp-ftw/anki-vscode.git /PATH/TO/DIRECTORY/```
 
 - open the folder at /PATH/TO/DIRECTORY/anki-addon-vscode-setup in VS Code, then open the terminal in VS Code
 
