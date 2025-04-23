@@ -49,7 +49,7 @@ Once you learn about debugging, it can be very valuable to get your code tested 
 - ALWAYS debug using the init file! You can still debug other files, e.g. adding breakpoints and checking variables, but you have to start debugging at init file. 
 
 ## Screenshot of me using it in Ankimon
-![Screenshot](Ankimon screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/h0tp-ftw/anki-addon-vscode-setup/refs/heads/master/Ankimon%20screenshot.png)
 
 ## Screenshots and recordings from @RisingOrange
 <img src="https://user-images.githubusercontent.com/31575114/212190695-3b80024e-2de5-4a5b-ba7e-921a65ad365c.png" width=500>
