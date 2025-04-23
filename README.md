@@ -62,7 +62,9 @@ WINDOWS : `venv\Scripts\activate`
 
 If Anki opens up when you do the debugging, CONGRATULATIONS! 
 
-Once you learn about debugging, it can be very valuable to get your code tested !
+Once you learn about debugging, it can be very valuable to get your code tested ! 
+
+You can also repeat this guide to create multiple environments for your Anki add-ons !
 
 ## Limitations
 - Anki addons can change thousands of files, so you should use this to test code changes and use another workspace to commit changes. Directly committing from this can be messy.
