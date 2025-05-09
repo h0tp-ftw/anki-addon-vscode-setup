@@ -80,5 +80,5 @@ If you see errors in importing from relative paths, likely that you misconfigure
 
 <img src="https://user-images.githubusercontent.com/31575114/212190704-170d6d4c-945e-4be2-8607-d585e86e31de.png" width=500>
 
-[![Watch the video]](https://files.catbox.moe/svqhrb.mp4)
+[![Watch the video](https://files.catbox.moe/qkujp4.png)](https://files.catbox.moe/svqhrb.mp4)
 
