@@ -42,7 +42,7 @@ WINDOWS : `venv\Scripts\activate`
 - try running Anki in terminal by using command `anki`, it should work and it should be separate than your usual Anki installation ! 
 
 ## Setting up addon environment
-- open Anki in terminal, and go to Add-Ons -> View Files to see where addons are stored (addons21).
+- open Anki in terminal, and go to Add-Ons -> View Files to see where addons are stored (addons21). **Note that you can CHANGE this directory using the launch.json file shown below, so you can change the directory for it later and then follow the next step accordingly.**
 
 - in this folder, either **add a symlink to your addon folder**, or a **copied folder of your addon**, or a **GitHub clone/branch of your addon** - it is upto you.
 
