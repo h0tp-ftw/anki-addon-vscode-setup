@@ -54,7 +54,7 @@ WINDOWS : `venv\Scripts\activate`
 
 - copy the **launch.json** file from this repository and paste it in that folder (.vscode/launch.json) 
 
-- open the `launch.json` file and edit it to change the Anki directory and to link to the anki binary in venv/bin. Make sure to have the FULL directory, not relative paths.
+- open the `launch.json` file and edit it to change the Anki directory and to link to the anki binary in venv/bin. Make sure to have the FULL directory, not relative paths. You can also link Anki directory to your native install - to get the same experience, files and addons as native.
 
 ## Debugging addon code using virtual Python environment 
 - open the `__init.py__` file for the addon. Note - this is the file we have to use to start our debugging! 
