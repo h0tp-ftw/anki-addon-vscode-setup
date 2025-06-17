@@ -25,7 +25,9 @@ Run this command in your terminal:
 Open PowerShell (no admin needed) and run this command:
 
 ```powershell
-iex (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/h0tp-ftw/anki-vscode/refs/heads/master/setup.ps1')
+Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/h0tp-ftw/anki-vscode/refs/heads/master/setup.ps1' -OutFile 'setup.ps1'
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\setup.ps1
 ```
 
 Not working? Open PowerShell (as Administrator if needed) and run:
