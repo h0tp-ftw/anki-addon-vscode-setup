@@ -205,6 +205,42 @@ else
 fi
 # ───────────────────────────────────────────────────────────────────────────
 
+# ───────────────────────────────────────────────────────────────────────────
+# User Backup Warning and Double Confirmation
+
+echo ""
+echo "⚠️  IMPORTANT: USER FILES BACKUP REQUIRED ⚠️" > /dev/tty
+echo "Before installing the Ankimon add-on, your existing Ankimon user files in the Anki add-ons directory WILL BE DELETED and replaced." > /dev/tty
+echo "You MUST backup the following files from the 'user_files' directory inside your Ankimon add-on folder (if present):" > /dev/tty
+echo "  - meta.json" > /dev/tty
+echo "  - mypokemon.json" > /dev/tty
+echo "  - mainpokemon.json" > /dev/tty
+echo "  - badges.json" > /dev/tty
+echo "  - items.json" > /dev/tty
+echo "  - teams.json (if present)" > /dev/tty
+echo "  - data.json (if present)" > /dev/tty
+echo "In total, you may have 5 to 7 files to back up depending on your usage." > /dev/tty
+if [ "$MODE" = "2" ]; then
+    echo "Note: If you are using a NEW SEPARATE installation (mode 2), this may not be needed, but it is still recommended to backup in case any issues occur." > /dev/tty
+fi
+echo "" > /dev/tty
+echo "Please backup these files now before proceeding." > /dev/tty
+echo -n "Have you backed up all your user files? Type YES (in all caps) to continue: " > /dev/tty
+read CONFIRM1 < /dev/tty
+if [ "$CONFIRM1" != "YES" ]; then
+    echo "Aborting installation. Please backup your files before running this script again." > /dev/tty
+    exit 1
+fi
+echo -n "This is your FINAL WARNING. Are you absolutely sure you have backed up your user files? Type YES (in all caps) to proceed: " > /dev/tty
+read CONFIRM2 < /dev/tty
+if [ "$CONFIRM2" != "YES" ]; then
+    echo "Aborting installation. Please backup your files before running this script again." > /dev/tty
+    exit 1
+fi
+echo "Proceeding with Ankimon add-on installation..." > /dev/tty
+# ───────────────────────────────────────────────────────────────────────────
+
+
 # Symlink src/Ankimon -> addons21/1908235722
 SRC_DIR="$ANKIMON_DIR/src/Ankimon"
 TARGET_LINK="$ADDONS_DIR/1908235722"
@@ -248,8 +284,12 @@ echo "✅ Ankimon add-on installed at: $TARGET_LINK"
 echo "✅ Launch configuration created at: $LAUNCH_DIR/launch.json"
 echo
 echo "Open '$ANKIMON_DIR' in VS Code and start debugging with 'Python Anki'."
-echo "Your venv’s Anki: $VENV_DIR/bin/anki"
+echo "Your venv Python binary path (to be used as interpreter): $VENV_DIR/bin/anki"
 echo "Anki data dir: $ANKI_BASE"
+echo "Your venv’s Anki: $VENV_DIR/bin/anki"
+echo "Please save the info above for future reference!"
+echo ""
+echo "Thanks for using the tool, hope it helps <3 - h0tp"
 echo
 
 # ───────────────────────────────────────────────────────────────────────────
