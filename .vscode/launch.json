@@ -3,7 +3,7 @@
     "configurations": [
         
         {
-            "name": "Python 2.7 Anki",
+            "name": "Python Anki",
             "type": "debugpy",
             "request": "launch",
             "stopOnEntry": false,
