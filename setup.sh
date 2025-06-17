@@ -38,7 +38,8 @@ echo "  Absolute path: /home/username/Documents/my-projects"
 echo "  Home relative: ~/Documents/my-projects"
 echo "  Current dir relative: ./my-projects"
 echo ""
-read -p "Press Enter to use default location, or type a custom directory path: " USER_CLONE_DIR
+echo -n "Press Enter to use default location, or type a custom directory path: " > /dev/tty
+read  USER_CLONE_DIR < /dev/tty
 
 CLONE_DIR="${USER_CLONE_DIR:-$DEFAULT_CLONE_DIR}"
 CLONE_DIR="${CLONE_DIR/#\~/$HOME}"
@@ -73,7 +74,8 @@ echo "  Absolute path: /home/username/my-venv"
 echo "  Relative to repo: ./venv"
 echo "  Custom location: ~/python-envs/anki-vscode"
 echo ""
-read -p "Press Enter to use default location, or type a custom venv path: " USER_VENV_DIR
+echo -n "Press Enter to use default location, or type a custom venv path: " > /dev/tty
+read  USER_VENV_DIR < /dev/tty
 
 VENV_DIR="${USER_VENV_DIR:-$DEFAULT_VENV_DIR}"
 VENV_DIR="${VENV_DIR/#\~/$HOME}"
@@ -144,11 +146,13 @@ echo
 echo "Ankimon Add-on Installation Mode"
 echo "1) Native Anki installation (detect and use your system’s addons21)"
 echo "2) Separate Anki installation (you specify a base directory)"
-read -p "Select [1 or 2]: " MODE
+echo -n "Select [1 or 2]: " > /dev/tty
+read  MODE < /dev/tty
 
 # Default Ankimon clone location
 DEFAULT_ANKIMON="$HOME/Documents/ankimon"
-read -p "Press Enter to clone Ankimon under [$DEFAULT_ANKIMON], or type custom path: " ANKIMON_DIR
+echo -n "Press Enter to clone Ankimon under [$DEFAULT_ANKIMON], or type custom path: " > /dev/tty
+read  ANKIMON_DIR   < /dev/tty
 ANKIMON_DIR="${ANKIMON_DIR:-$DEFAULT_ANKIMON}"
 mkdir -p "$ANKIMON_DIR"
 if [ ! -d "$ANKIMON_DIR/.git" ]; then
@@ -173,14 +177,16 @@ if [ "$MODE" = "1" ]; then
   for DIR in "${POSSIBLE[@]}"; do
     if [ -d "$DIR" ]; then
       echo "Found: $DIR"
-      read -p "Use this directory? [Y/n]: " yn
+      echo -n "Use this directory? [Y/n]: " > /dev/tty
+      read  yn           < /dev/tty
       case "$yn" in [Nn]*) continue;; *) ADDONS_DIR="$DIR"; break;; esac
     fi
   done
   # Fallback to manual if not set
   if [ -z "$ADDONS_DIR" ]; then
     echo "Could not auto-detect addons21. It should contain folders like '1908235722' and 'community'."
-    read -p "Enter your Anki base directory (parent of addons21): " ANKI_BASE
+    echo -n "Enter your Anki base directory (parent of addons21): " > /dev/tty
+    read  ANKI_BASE     < /dev/tty
     ADDONS_DIR="$ANKI_BASE/addons21"
   else
     ANKI_BASE="$(dirname "$ADDONS_DIR")"
@@ -188,7 +194,8 @@ if [ "$MODE" = "1" ]; then
 
 elif [ "$MODE" = "2" ]; then
   echo
-  read -p "Enter your Anki base directory (will contain addons21): " ANKI_BASE
+  echo -n "Enter your Anki base directory (will contain addons21): " > /dev/tty
+  read  ANKI_BASE     < /dev/tty
   ADDONS_DIR="$ANKI_BASE/addons21"
   mkdir -p "$ADDONS_DIR"
 
