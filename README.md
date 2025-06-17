@@ -11,6 +11,32 @@ Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't
 - Allows for a virtual environment with a new installation of Anki separate from your installation.
 - Cross-platform compatible as long as you have **VS Code** and **pip** available.
 
+# One-Step Commands for Running Setup Scripts
+
+## macOS/Linux (Bash)
+
+Run this command in your terminal:
+
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/h0tp-ftw/anki-vscode/refs/heads/master/setup.sh | bash
+   ```
+
+---
+
+## Windows (PowerShell)
+
+Open PowerShell (no admin needed) and run this command:
+
+```powershell
+iex (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/h0tp-ftw/anki-vscode/refs/heads/master/setup.ps1')
+```
+
+Not working? Open PowerShell (as Administrator if needed) and run:
+```
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+iex (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/h0tp-ftw/anki-vscode/refs/heads/master/setup.ps1')
+```
+
 ## Screenshot of me using it in Ankimon
 ![Screenshot](https://raw.githubusercontent.com/h0tp-ftw/anki-addon-vscode-setup/refs/heads/master/Ankimon%20screenshot.png)
 
