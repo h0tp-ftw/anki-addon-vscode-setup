@@ -1,7 +1,6 @@
-# setup_windows.ps1
-# Automated clone, venv creation, package install, and activation for Windows
+# setup.ps1
+# Automated clone, venv creation, dependency install, and activation for Windows
 
-# Strict error handling
 $ErrorActionPreference = 'Stop'
 
 # Configuration
@@ -14,11 +13,11 @@ Write-Host "==== Anki-VSCode Setup for Windows ====" -ForegroundColor Cyan
 
 # Detect Python stub and select interpreter
 $pythonCmd = $null
-# If 'python' exists, check if it's a WindowsApps stub
-$pythonPath = (Get-Command python -ErrorAction SilentlyContinue)?.Path
-if ($pythonPath) {
+$cmd       = Get-Command python -ErrorAction SilentlyContinue
+if ($cmd) {
+    $pythonPath = $cmd.Path
     if ($pythonPath -like '*WindowsApps*') {
-        Write-Host "Detected Python stub; launching Microsoft Store installer..." -ForegroundColor Yellow
+        Write-Host "Detected Python stub; launching Store installer..." -ForegroundColor Yellow
         Start-Process -FilePath $pythonPath
         Write-Error "Please install Python and rerun this script."
         exit 1
@@ -26,10 +25,9 @@ if ($pythonPath) {
         $pythonCmd = 'python'
     }
 }
-# Fallback to 'py' launcher if 'python' not available
 if (-not $pythonCmd) {
     if (Get-Command py -ErrorAction SilentlyContinue) {
-        Write-Host "Using 'py' launcher instead of 'python'." -ForegroundColor Cyan
+        Write-Host "Using 'py' launcher." -ForegroundColor Cyan
         $pythonCmd = 'py'
     } else {
         Write-Host "Python not found; launching installer prompt..." -ForegroundColor Yellow
@@ -41,9 +39,9 @@ if (-not $pythonCmd) {
 
 # Prompt for clone directory
 Write-Host "`nDefault clone location: $DefaultRepo" -ForegroundColor Cyan
-Write-Host "Examples: C:\Users\Name\Documents\my-project  |  D:\Dev\anki-vscode" -ForegroundColor Yellow
+Write-Host "Examples: C:\Users\Name\Documents\my-project | D:\Dev\anki-vscode" -ForegroundColor Yellow
 $InputRepo = Read-Host 'Press Enter to accept default or type custom path'
-$CloneDir = if ([string]::IsNullOrWhiteSpace($InputRepo)) { $DefaultRepo } else { $InputRepo }
+$CloneDir  = if ([string]::IsNullOrWhiteSpace($InputRepo)) { $DefaultRepo } else { $InputRepo }
 Write-Host "Cloning to: $CloneDir" -ForegroundColor Green
 
 # Ensure Git is available
@@ -64,9 +62,9 @@ Set-Location $CloneDir
 # Prompt for venv location
 $DefaultVenv = Join-Path $CloneDir 'venv'
 Write-Host "`nDefault venv location: $DefaultVenv" -ForegroundColor Cyan
-Write-Host "Examples: C:\Envs\anki-env  |  .\venv" -ForegroundColor Yellow
+Write-Host "Examples: C:\Envs\anki-env | .\venv" -ForegroundColor Yellow
 $InputVenv = Read-Host 'Press Enter to accept default or type custom path'
-$VenvDir = if ([string]::IsNullOrWhiteSpace($InputVenv)) { $DefaultVenv } else { $InputVenv }
+$VenvDir   = if ([string]::IsNullOrWhiteSpace($InputVenv)) { $DefaultVenv } else { $InputVenv }
 Write-Host "Creating venv at: $VenvDir" -ForegroundColor Green
 
 # Create virtual environment
