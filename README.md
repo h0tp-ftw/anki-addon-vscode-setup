@@ -30,8 +30,9 @@ iex (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercont
 
 Not working? Open PowerShell (as Administrator if needed) and run:
 ```
+Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/h0tp-ftw/anki-vscode/refs/heads/master/setup.ps1' -OutFile 'setup.ps1'
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-iex (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/h0tp-ftw/anki-vscode/refs/heads/master/setup.ps1')
+.\setup.ps1
 ```
 
 ## Screenshot of me using it in Ankimon
