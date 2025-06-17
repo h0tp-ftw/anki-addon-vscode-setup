@@ -131,7 +131,118 @@ echo "Pip version: $(pip --version | cut -d' ' -f1-2)"
 echo "Working directory: $(pwd)"
 echo ""
 echo "Your development environment is ready to use!"
-echo "The virtual environment will remain active in this terminal session."
 echo ""
-echo "To activate this environment in future terminal sessions, run:"
+echo "If you ever need to use this environment in future terminal sessions, run:"
 echo "source \"$VENV_DIR/bin/activate\""
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# Ankimon Add-on Installation & launch.json Generation
+# ───────────────────────────────────────────────────────────────────────────
+
+echo
+echo "Ankimon Add-on Installation Mode"
+echo "1) Native Anki installation (detect and use your system’s addons21)"
+echo "2) Separate Anki installation (you specify a base directory)"
+read -p "Select [1 or 2]: " MODE
+
+# Default Ankimon clone location
+DEFAULT_ANKIMON="$HOME/Documents/ankimon"
+read -p "Press Enter to clone Ankimon under [$DEFAULT_ANKIMON], or type custom path: " ANKIMON_DIR
+ANKIMON_DIR="${ANKIMON_DIR:-$DEFAULT_ANKIMON}"
+mkdir -p "$ANKIMON_DIR"
+if [ ! -d "$ANKIMON_DIR/.git" ]; then
+  echo "Cloning Ankimon into $ANKIMON_DIR…" 
+  git clone https://github.com/h0tp-ftw/ankimon.git "$ANKIMON_DIR"
+else
+  echo "Updating existing Ankimon repo…" 
+  cd "$ANKIMON_DIR" && git pull && cd - >/dev/null
+fi
+
+# ───────────────────────────────────────────────────────────────────────────
+# Determine Anki addons21 and base directory with confirmation
+if [ "$MODE" = "1" ]; then
+  echo
+  echo "Detecting native Anki addons21 directory..."
+  # Common Linux/macOS locations
+  POSSIBLE=(
+    "$HOME/.var/app/net.ankiweb.Anki/data/Anki2/addons21"
+    "$HOME/Library/Application Support/Anki2/addons21"
+    "$HOME/.local/share/Anki2/addons21"
+  )
+  for DIR in "${POSSIBLE[@]}"; do
+    if [ -d "$DIR" ]; then
+      echo "Found: $DIR"
+      read -p "Use this directory? [Y/n]: " yn
+      case "$yn" in [Nn]*) continue;; *) ADDONS_DIR="$DIR"; break;; esac
+    fi
+  done
+  # Fallback to manual if not set
+  if [ -z "$ADDONS_DIR" ]; then
+    echo "Could not auto-detect addons21. It should contain folders like '1908235722' and 'community'."
+    read -p "Enter your Anki base directory (parent of addons21): " ANKI_BASE
+    ADDONS_DIR="$ANKI_BASE/addons21"
+  else
+    ANKI_BASE="$(dirname "$ADDONS_DIR")"
+  fi
+
+elif [ "$MODE" = "2" ]; then
+  echo
+  read -p "Enter your Anki base directory (will contain addons21): " ANKI_BASE
+  ADDONS_DIR="$ANKI_BASE/addons21"
+  mkdir -p "$ADDONS_DIR"
+
+else
+  echo "Invalid option; aborting."
+  exit 1
+fi
+# ───────────────────────────────────────────────────────────────────────────
+
+# Symlink src/Ankimon -> addons21/1908235722
+SRC_DIR="$ANKIMON_DIR/src/Ankimon"
+TARGET_LINK="$ADDONS_DIR/1908235722"
+
+echo "Linking $SRC_DIR -> $TARGET_LINK"
+# Use -n to avoid clobbering existing directory, -f to overwrite stale link
+ln -sfn "$SRC_DIR" "$TARGET_LINK" \
+  && echo "Symlink created successfully." \
+  || { 
+       echo "⚠️  Failed to link. Please backup $TARGET_LINK and try again.";
+       exit 1;
+     }
+
+# Generate .vscode/launch.json in Ankimon repo
+LAUNCH_DIR="$ANKIMON_DIR/.vscode"
+mkdir -p "$LAUNCH_DIR"
+cat > "$LAUNCH_DIR/launch.json" <<EOF
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Anki",
+            "type": "debugpy",
+            "request": "launch",
+            "stopOnEntry": false,
+            "program": "$VENV_DIR/bin/anki",
+            "cwd": "\${workspaceRoot}",
+            "env": {},
+            "args": [
+                "-b",
+                "$ANKI_BASE"
+            ],
+            "envFile": "\${workspaceRoot}/.env"
+        }
+    ]
+}
+EOF
+
+echo
+echo "✅ Ankimon add-on installed at: $TARGET_LINK"
+echo "✅ Launch configuration created at: $LAUNCH_DIR/launch.json"
+echo
+echo "Open '$ANKIMON_DIR' in VS Code and start debugging with 'Python Anki'."
+echo "Your venv’s Anki: $VENV_DIR/bin/anki"
+echo "Anki data dir: $ANKI_BASE"
+echo
+
+# ───────────────────────────────────────────────────────────────────────────
