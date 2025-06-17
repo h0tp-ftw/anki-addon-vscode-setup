@@ -4,9 +4,6 @@
 - use for other add-ons
 - make it easy to set up!
 
-Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't know how to DM on GitHub - I wanted to send a thank-you message.
-
-## About this project
 - Great for debugging your add-on development in Anki! (debugging, variable inspections and code changes can be done **live**)
 - Allows for a virtual environment with a new installation of Anki separate from your installation.
 - Cross-platform compatible as long as you have **VS Code** and **pip** available.
@@ -42,6 +39,8 @@ iex (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercont
 
 Click on the image below (it is a VIDEO) to watch how I installed it on my device (no audio):
 [![Watch the video](https://files.catbox.moe/qkujp4.png)](https://files.catbox.moe/svqhrb.mp4)
+
+Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't know how to DM on GitHub - I wanted to send a thank-you message.
 
 # How to use
 ## Setting up virtual Python environment
