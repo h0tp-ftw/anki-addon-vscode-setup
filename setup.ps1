@@ -12,15 +12,38 @@ $DefaultRepo = Join-Path $Documents $REPO_NAME
 
 Write-Host "==== Anki-VSCode Setup for Windows ====" -ForegroundColor Cyan
 
-# Prompt for clone directory
-Write-Host "Default clone location: $DefaultRepo"
-Write-Host "Examples: C:\Users\Name\Documents\my-project|D:\Dev\anki-vscode"
-$InputRepo = Read-Host 'Press Enter to accept default or type custom path'
-if ([string]::IsNullOrWhiteSpace($InputRepo)) {
-    $CloneDir = $DefaultRepo
-} else {
-    $CloneDir = $InputRepo
+# Detect Python stub and select interpreter
+$pythonCmd = $null
+# If 'python' exists, check if it's a WindowsApps stub
+$pythonPath = (Get-Command python -ErrorAction SilentlyContinue)?.Path
+if ($pythonPath) {
+    if ($pythonPath -like '*WindowsApps*') {
+        Write-Host "Detected Python stub; launching Microsoft Store installer..." -ForegroundColor Yellow
+        Start-Process -FilePath $pythonPath
+        Write-Error "Please install Python and rerun this script."
+        exit 1
+    } else {
+        $pythonCmd = 'python'
+    }
 }
+# Fallback to 'py' launcher if 'python' not available
+if (-not $pythonCmd) {
+    if (Get-Command py -ErrorAction SilentlyContinue) {
+        Write-Host "Using 'py' launcher instead of 'python'." -ForegroundColor Cyan
+        $pythonCmd = 'py'
+    } else {
+        Write-Host "Python not found; launching installer prompt..." -ForegroundColor Yellow
+        Start-Process -FilePath 'python'
+        Write-Error "Please install Python and rerun this script."
+        exit 1
+    }
+}
+
+# Prompt for clone directory
+Write-Host "`nDefault clone location: $DefaultRepo" -ForegroundColor Cyan
+Write-Host "Examples: C:\Users\Name\Documents\my-project  |  D:\Dev\anki-vscode" -ForegroundColor Yellow
+$InputRepo = Read-Host 'Press Enter to accept default or type custom path'
+$CloneDir = if ([string]::IsNullOrWhiteSpace($InputRepo)) { $DefaultRepo } else { $InputRepo }
 Write-Host "Cloning to: $CloneDir" -ForegroundColor Green
 
 # Ensure Git is available
@@ -28,11 +51,11 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
     Write-Error 'Git is not installed or not in PATH.'; exit 1
 }
 
-# Clone or update
+# Clone or update repository
 if (-not (Test-Path $CloneDir)) {
     git clone $REPO_URL $CloneDir
 } else {
-    Write-Host 'Repo exists; pulling latest changes...' -ForegroundColor Yellow
+    Write-Host "Repo exists; pulling latest changes..." -ForegroundColor Yellow
     Set-Location $CloneDir; git pull
 }
 
@@ -40,32 +63,23 @@ Set-Location $CloneDir
 
 # Prompt for venv location
 $DefaultVenv = Join-Path $CloneDir 'venv'
-Write-Host "`nDefault venv location: $DefaultVenv"
-Write-Host "Examples: C:\Envs\anki-env|.\venv"
+Write-Host "`nDefault venv location: $DefaultVenv" -ForegroundColor Cyan
+Write-Host "Examples: C:\Envs\anki-env  |  .\venv" -ForegroundColor Yellow
 $InputVenv = Read-Host 'Press Enter to accept default or type custom path'
-if ([string]::IsNullOrWhiteSpace($InputVenv)) {
-    $VenvDir = $DefaultVenv
-} else {
-    $VenvDir = $InputVenv
-}
+$VenvDir = if ([string]::IsNullOrWhiteSpace($InputVenv)) { $DefaultVenv } else { $InputVenv }
 Write-Host "Creating venv at: $VenvDir" -ForegroundColor Green
 
-# Ensure Python is available
-if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
-    Write-Error 'Python is not installed or not in PATH.'; exit 1
-}
+# Create virtual environment
+& $pythonCmd -m venv $VenvDir
 
-# Create venv
-python -m venv $VenvDir
-
-# Install requirements
+# Install requirements if present
 if (Test-Path 'requirements.txt') {
-    Write-Host 'Installing dependencies...' -ForegroundColor Cyan
+    Write-Host "`nInstalling dependencies from requirements.txt..." -ForegroundColor Cyan
     & "$VenvDir\Scripts\python.exe" -m pip install --upgrade pip
-    & "$VenvDir\Scripts\pip.exe" install -r requirements.txt
+    & "$VenvDir\Scripts\python.exe" -m pip install -r requirements.txt
 }
 
-# Activate venv in current session
+# Activate the virtual environment for current session
 Write-Host "`nActivating virtual environment..." -ForegroundColor Cyan
 & "$VenvDir\Scripts\Activate.ps1"
 
