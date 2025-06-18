@@ -66,7 +66,7 @@ if ($pythonAvailable) {
     } else {
         Write-Host "2. Download the Windows x86 executable installer (look for 'Windows installer (32-bit)')." -ForegroundColor Cyan
     }
-    Write-Host "3. Run the installer and **ensure you check 'Add Python to PATH'** during installation." -ForegroundColor Cyan
+    Write-Host "3. Run the installer and **MAKE SURE YOU CHECK THE OPTION 'Add Python to PATH'** during installation." -ForegroundColor Cyan
     Write-Host ""
     Write-Host "After installing, please restart this script." -ForegroundColor Yellow
     exit 1
@@ -150,9 +150,7 @@ if (Test-Path 'requirements.txt') {
 Write-Host 'Virtual env      : Active in this session' -ForegroundColor Green
 Write-Host "======================================`n" -ForegroundColor Cyan
 
-# ───────────────────────────────────────────────────────────────────────────
 # Ankimon Add-on Installation & launch.json Generation
-# ───────────────────────────────────────────────────────────────────────────
 
 Write-Host ""
 Write-Host "Ankimon Add-on Installation Mode" -ForegroundColor Cyan
@@ -211,9 +209,7 @@ if ($MODE -eq '1') {
     exit 1
 }
 
-# ───────────────────────────────────────────────────────────────────────────
 # User Backup Warning and Double Confirmation
-# ───────────────────────────────────────────────────────────────────────────
 
 Write-Host ""
 Write-Host "⚠️  IMPORTANT: USER FILES BACKUP REQUIRED ⚠️" -ForegroundColor Red
@@ -237,25 +233,21 @@ if ($confirm2 -ne 'YES') {
 }
 Write-Host "Proceeding with Ankimon add-on installation..." -ForegroundColor Green
 
-# ───────────────────────────────────────────────────────────────────────────
 # Symlink src/Ankimon -> addons21/1908235722
-# ───────────────────────────────────────────────────────────────────────────
 
 $srcDir     = Join-Path $AnkimonDir 'src\Ankimon'
 $targetLink = Join-Path $AddonsDir '1908235722'
 
 Write-Host ""
-Write-Host "Linking `$srcDir` → `$targetLink`" -ForegroundColor Cyan
+Write-Host "Linking `$srcDir` to the directory `$targetLink` " -ForegroundColor Cyan
 if (Test-Path $targetLink) {
     Write-Host "Removing existing link or folder at `$targetLink`..." -ForegroundColor Yellow
     Remove-Item -Recurse -Force $targetLink
 }
 New-Item -ItemType SymbolicLink -Path $targetLink -Target $srcDir | Out-Null
-Write-Host "✅ Symlink created: $targetLink → $srcDir" -ForegroundColor Green
+Write-Host "✅ Symlink created: $targetLink pointing to $srcDir" -ForegroundColor Green
 
-# ───────────────────────────────────────────────────────────────────────────
 # Generate .vscode/launch.json in Ankimon repo (Windows)
-# ───────────────────────────────────────────────────────────────────────────
 
 # Define template and target file paths
 $templateFile = Join-Path $AnkimonDir '.vscode\launch_windows.json'
@@ -269,14 +261,12 @@ if (-not (Test-Path $templateFile)) {
 # Read template, replace placeholders, and output final JSON
 $content = Get-Content -Path $templateFile -Raw
 $content = $content.Replace('$PROGRAM_PATH$', "$($VenvDir)\Scripts\anki.exe")
-$content = $content.Replace('$DATA_DIR$', $AnkiBase)
+$content = $content.Replace('$DATA_DIR$', "$AnkiBase")
 $content | Set-Content -Path $launchFile -Encoding UTF8
 
 Write-Host "✅ launch.json configured at: $launchFile" -ForegroundColor Green
 
-# ───────────────────────────────────────────────────────────────────────────
 # Final Confirmation & User Guidance
-# ───────────────────────────────────────────────────────────────────────────
 
 Write-Host ""
 Write-Host "✅ Ankimon add-on installed at: $targetLink" -ForegroundColor Green
@@ -288,11 +278,11 @@ Write-Host "Your virtual environment Anki: $($VenvDir)\Scripts\anki.exe" -Foregr
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Cyan
 Write-Host "1. Open the folder $AnkimonDir in VS Code (File > Open Folder)." -ForegroundColor Cyan
-Write-Host "2. In VS Code, press Ctrl+Shift+P, type Python: Select Interpreter, and set the path to: $($VenvDir)\Scripts\python.exe" -ForegroundColor Cyan
+Write-Host ("2. In VS Code, press Ctrl+Shift+P, type Python - Select Interpreter, and set the path to {0}\Scripts\python.exe" -f $VenvDir) -ForegroundColor Cyan
 Write-Host "3. Start debugging: click the Run and Debug icon, choose Python Anki from the dropdown, and press Start." -ForegroundColor Cyan
-Write-Host "If everything went well, Anki will open with your add-on loaded." -ForegroundColor Cyan
+Write-Host 'If everything went well, Anki will open with your add-on loaded.' -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Please save the info above for future reference!" -ForegroundColor Cyan
+Write-Host 'Please save the info above for future reference!' -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Thanks for using the tool, hope it helps <3 - h0tp" -ForegroundColor Magenta
+Write-Host 'Thanks for using the tool, hope it helps <3 - h0tp' -ForegroundColor Magenta
 Write-Host ""
