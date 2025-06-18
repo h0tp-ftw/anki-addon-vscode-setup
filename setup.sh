@@ -1,4 +1,21 @@
 #!/bin/bash
+#
+# ==========================================================================
+#  Anki-VSCode Setup Script
+#  Description : Clones the anki-vscode and ankimon repos, sets up venv,
+#                installs dependencies, configures add-on and launch.json.
+#  Author      : h0tp-ftw
+#  Date        : $(date +"%Y-%m-%d")
+#  Usage       : curl -fsSL <URL>/setup.sh | bash
+# ==========================================================================
+
+echo "====================================================================="
+echo "  Anki-VSCode Integration Script (for Ankimon Experimental)"
+echo "  by h0tp-ftw | https://github.com/h0tp-ftw/anki-vscode"
+echo "  Date: $(date +"%Y-%m-%d")"
+echo "====================================================================="
+echo ""
+
 set -e
 
 REPO_URL="https://github.com/h0tp-ftw/anki-vscode.git"

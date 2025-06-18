@@ -8,7 +8,7 @@ VSCode dev setup for Anki add-ons, inspired by the work of [@RisingOrange](https
 
 # One-Step Commands for Running Setup Scripts
 
-These commands are designed for installation of the [Ankimon (experimental)](https://github.com/h0tp-ftw/ankimon) addon. If you want to run it for another addon, change the REPO_URL which is declared at the top of the setup scripts.
+These commands are designed for installation of the [Ankimon (experimental)](https://github.com/h0tp-ftw/ankimon) addon. Please follow the steps below in the "How to set up step-by-step" section for other addons.
 
 Dependencies: **Python** and **Git**
 

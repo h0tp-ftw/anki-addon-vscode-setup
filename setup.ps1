@@ -1,5 +1,20 @@
-# setup.ps1
-# Automated clone, venv creation, dependency install, and activation for Windows
+<#
+ ============================================================================
+   Anki-VSCode Setup Script
+   Description : Clones the anki-vscode and ankimon repos, creates venv,
+                 installs dependencies, configures add-on and launch.json.
+   Author      : h0tp-ftw
+   Date        : $(Get-Date -Format yyyy-MM-dd)
+   Usage       : .\setup.ps1 (download and run interactively)
+ ============================================================================
+#>
+
+Write-Host "=====================================================================" -ForegroundColor Cyan
+Write-Host "  Anki-VSCode Integration Script (for Ankimon Experimental)" -ForegroundColor Cyan
+Write-Host "  by h0tp-ftw | https://github.com/h0tp-ftw/anki-vscode" -ForegroundColor Cyan
+Write-Host ("  Date: " + (Get-Date -Format yyyy-MM-dd)) -ForegroundColor Cyan
+Write-Host "=====================================================================" -ForegroundColor Cyan
+Write-Host ""
 
 $ErrorActionPreference = 'Stop'
 
