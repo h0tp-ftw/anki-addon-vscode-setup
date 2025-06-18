@@ -235,13 +235,13 @@ $launchFile = Join-Path $launchDir 'launch.json'
             "request": "launch",
             "stopOnEntry": false,
             "program": "$VenvDir\Scripts\anki.exe",
-            "cwd": "${workspaceRoot}",
+            "cwd": "`\${workspaceRoot}",
             "env": {},
             "args": [
                 "-b",
                 "$AnkiBase"
             ],
-            "envFile": "${workspaceRoot}\.env"
+            "envFile": "`\${workspaceRoot}\.env"
         }
     ]
 }
