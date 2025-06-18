@@ -131,7 +131,7 @@ source "$VENV_DIR/bin/activate"
 
 # Display comprehensive summary
 echo ""
-echo "🎉 SETUP COMPLETE - SUMMARY"
+echo "VIRTUAL ENVIRONMENT SET UP - SUMMARY"
 echo "=========================="
 echo "✅ Repository cloned/updated at: $CLONE_DIR"
 echo "✅ Virtual environment created at: $VENV_DIR"
@@ -151,7 +151,7 @@ echo "Working directory: $(pwd)"
 echo ""
 echo "Your development environment is ready to use!"
 echo ""
-echo "If you ever need to use this environment in future terminal sessions, run:"
+echo "Note: If you ever need to use this environment in future terminal sessions, run:"
 echo "source \"$VENV_DIR/bin/activate\""
 
 
@@ -161,8 +161,10 @@ echo "source \"$VENV_DIR/bin/activate\""
 
 echo
 echo "Ankimon Add-on Installation Mode"
-echo "1) Native Anki installation (detect and use your system’s addons21)"
-echo "2) Separate Anki installation (you specify a base directory)"
+echo "1) Native Anki installation (detect and use your system’s addons21). This will use your existing Anki installation for all the files and addons." 
+echo "2) Separate Anki installation (you specify a base directory). This will make an entirely new Anki installation, separate from your normal Anki installation."
+echo "Both options are good. 1. is more convenient and mimics your actual installation, and 2. is isolated from your install, and messing up your addon will not affect your normal installation."
+echo ""
 echo -n "Select [1 or 2]: " > /dev/tty
 read  MODE < /dev/tty
 
