@@ -24,15 +24,13 @@ Run this command in your terminal:
 
 ## Windows (PowerShell)
 
-Open PowerShell (no admin needed) and run this command:
+Open **PowerShell as Administrator** and run this command:
 
 ```powershell
 Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/h0tp-ftw/anki-vscode/refs/heads/master/setup.ps1' -OutFile 'setup.ps1'
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\setup.ps1
 ```
-
-Not working? Open PowerShell (as Administrator if needed) and try the command again. Also try running the command `python` in your PowerShell to start the Python installation process (if it doesn't exist already).
 
 [![Star History Chart](https://api.star-history.com/svg?repos=h0tp-ftw/anki-vscode&type=Date)](https://www.star-history.com/#h0tp-ftw/anki-vscode&Date)
 
