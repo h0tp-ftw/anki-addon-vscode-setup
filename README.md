@@ -33,6 +33,8 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 Not working? Open PowerShell (as Administrator if needed) and try the command again.
 
+[![Star History Chart](https://api.star-history.com/svg?repos=h0tp-ftw/anki-vscode&type=Date)](https://www.star-history.com/#h0tp-ftw/anki-vscode&Date)
+
 ## Screenshot of me using it in Ankimon
 ![Screenshot](https://raw.githubusercontent.com/h0tp-ftw/anki-addon-vscode-setup/refs/heads/master/Ankimon%20screenshot.png)
 
