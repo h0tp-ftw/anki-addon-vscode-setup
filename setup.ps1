@@ -18,6 +18,67 @@ Write-Host ""
 
 $ErrorActionPreference = 'Stop'
 
+# Detect system architecture (x64, ARM64, x86)
+$arch = (Get-CimInstance Win32_OperatingSystem).OSArchitecture
+if ($arch -match "64") {
+    if ($arch -match "ARM") { $archString = "ARM64" }
+    else { $archString = "x64 (64-bit)" }
+} elseif ($arch -match "32") {
+    $archString = "x86 (32-bit)"
+} else {
+    $archString = $arch
+}
+
+Write-Host ""
+Write-Host "Detected Windows architecture: $archString" -ForegroundColor Cyan
+Write-Host ""
+
+# Check for Python (python or py)
+$pythonAvailable = $false
+if (Get-Command python -ErrorAction SilentlyContinue) { $pythonAvailable = $true }
+elseif (Get-Command py -ErrorAction SilentlyContinue) { $pythonAvailable = $true }
+
+if ($pythonAvailable) {
+    Write-Host "✅ Python is installed and available in your PATH." -ForegroundColor Green
+} else {
+    Write-Host "❌ Python is not installed or not in your PATH." -ForegroundColor Red
+    Write-Host "Python (with pip) is required to continue." -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "To install Python ($archString recommended):" -ForegroundColor Cyan
+    Write-Host "1. Visit https://www.python.org/downloads/windows/" -ForegroundColor Cyan
+    if ($archString -eq "ARM64") {
+        Write-Host "2. Download the Windows ARM64 executable installer (look for 'Windows ARM64' under 'Stable Releases')." -ForegroundColor Cyan
+    } elseif ($archString -eq "x64 (64-bit)") {
+        Write-Host "2. Download the Windows x86-64 executable installer (look for 'Windows installer (64-bit)')." -ForegroundColor Cyan
+    } else {
+        Write-Host "2. Download the Windows x86 executable installer (look for 'Windows installer (32-bit)')." -ForegroundColor Cyan
+    }
+    Write-Host "3. Run the installer and ensure you check 'Add Python to PATH' during installation." -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "After installing, restart this script." -ForegroundColor Yellow
+    exit 1
+}
+
+# Check for Git
+if (Get-Command git -ErrorAction SilentlyContinue) {
+    Write-Host "✅ Git is installed and available in your PATH." -ForegroundColor Green
+} else {
+    Write-Host "❌ Git is not installed or not in your PATH." -ForegroundColor Red
+    Write-Host "Git is required to clone repositories." -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "To install Git ($archString recommended):" -ForegroundColor Cyan
+    Write-Host "1. Visit https://git-scm.com/download/win" -ForegroundColor Cyan
+    if ($archString -eq "ARM64") {
+        Write-Host "2. Download the '64-bit Git for Windows Setup' (ARM64 builds are available in the 'Other Git for Windows downloads' section)." -ForegroundColor Cyan
+    } else {
+        Write-Host "2. Download the '64-bit Git for Windows Setup' for x64, or '32-bit Git for Windows Setup' for x86." -ForegroundColor Cyan
+    }
+    Write-Host "3. Follow the default prompts and ensure 'Git from the command line' is enabled." -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "After installing, restart this script." -ForegroundColor Yellow
+    exit 1
+}
+
 # Configuration
 $REPO_URL    = 'https://github.com/h0tp-ftw/anki-vscode.git'
 $REPO_NAME   = 'anki-vscode'
