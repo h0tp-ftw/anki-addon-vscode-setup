@@ -283,10 +283,10 @@ echo
 echo "✅ Ankimon add-on installed at: $TARGET_LINK"
 echo "✅ Launch configuration created at: $LAUNCH_DIR/launch.json"
 echo
-echo "Open '$ANKIMON_DIR' in VS Code and start debugging with 'Python Anki'."
+echo "Open the folder '$ANKIMON_DIR' in VS Code and start debugging with 'Python Anki', via Debug using launch.json."
 echo "Your venv Python binary path (to be used as interpreter): $VENV_DIR/bin/anki"
 echo "Anki data dir: $ANKI_BASE"
-echo "Your venv’s Anki: $VENV_DIR/bin/anki"
+echo "Your virtual environment Anki: $VENV_DIR/bin/anki"
 echo "Please save the info above for future reference!"
 echo ""
 echo "Thanks for using the tool, hope it helps <3 - h0tp"
