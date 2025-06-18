@@ -289,7 +289,7 @@ Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Cyan
 Write-Host "1. Open the folder $AnkimonDir in VS Code (File > Open Folder)." -ForegroundColor Cyan
 Write-Host "2. In VS Code, press Ctrl+Shift+P, type 'Python: Select Interpreter', and set the path to: $($VenvDir)\Scripts\python.exe" -ForegroundColor Cyan
-Write-Host "3. Start debugging: click the Run and Debug icon, choose 'Python Anki' from the dropdown, and press Start." -ForegroundColor Cyan
+Write-Host "3. Start debugging: click the Run and Debug icon, choose Python Anki from the dropdown, and press Start." -ForegroundColor Cyan
 Write-Host "If everything went well, Anki will open with your add-on loaded." -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Please save the info above for future reference!" -ForegroundColor Cyan
