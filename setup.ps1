@@ -279,34 +279,26 @@ New-Item -ItemType SymbolicLink -Path $targetLink -Target $srcDir | Out-Null
 Write-Host "✅ Symlink created: $targetLink → $srcDir" -ForegroundColor Green[#]
 
 # ───────────────────────────────────────────────────────────────────────────
-# Generate .vscode/launch.json in Ankimon repo
+# Generate .vscode/launch.json in Ankimon repo (Windows)
 # ───────────────────────────────────────────────────────────────────────────
 
-$launchDir = Join-Path $AnkimonDir '.vscode'
-if (-not (Test-Path $launchDir)) { New-Item -ItemType Directory -Path $launchDir | Out-Null }
-$launchFile = Join-Path $launchDir 'launch.json'
-
-@"
-{
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python Anki",
-            "type": "debugpy",
-            "request": "launch",
-            "stopOnEntry": false,
-            "program": "$VenvDir\Scripts\anki.exe",
-            "cwd": "`\${workspaceRoot}",
-            "env": {},
-            "args": [
-                "-b",
-                "$AnkiBase"
-            ],
-            "envFile": "`\${workspaceRoot}\.env"
-        }
-    ]
+# Ensure .vscode folder exists
+$launchDir   = Join-Path $AnkimonDir '.vscode'
+if (-not (Test-Path $launchDir)) {
+    New-Item -ItemType Directory -Path $launchDir | Out-Null
 }
-"@ | Set-Content -Path $launchFile -Encoding UTF8
+
+# Define template and target file paths
+$templateFile = Join-Path $launchDir 'launch_windows.json'
+$launchFile   = Join-Path $launchDir 'launch.json'
+
+# Read template, replace placeholders, and output final JSON
+(Get-Content $templateFile) `
+  -replace '\$PROGRAM_PATH\$', "$VenvDir\Scripts\anki.exe" `
+  -replace '\$DATA_DIR\$',       "$AnkiBase"             |
+  Set-Content -Path $launchFile -Encoding UTF8
+
+Write-Host "✅ launch.json configured at: $launchFile" -ForegroundColor Green
 
 # ───────────────────────────────────────────────────────────────────────────
 # Final Confirmation & User Guidance
