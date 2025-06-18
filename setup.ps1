@@ -246,9 +246,9 @@ $srcDir     = Join-Path $AnkimonDir 'src\Ankimon'
 $targetLink = Join-Path $AddonsDir '1908235722'
 
 Write-Host ""
-Write-Host "Linking `$srcDir` to the directory `$targetLink` " -ForegroundColor Cyan
+Write-Host "Linking $srcDir to the directory $targetLink" -ForegroundColor Cyan
 if (Test-Path $targetLink) {
-    Write-Host "Removing existing link or folder at `$targetLink`..." -ForegroundColor Yellow
+    Write-Host "Removing existing link or folder at $targetLink..." -ForegroundColor Yellow
     Remove-Item -Recurse -Force $targetLink
 }
 New-Item -ItemType SymbolicLink -Path $targetLink -Target $srcDir | Out-Null
@@ -256,19 +256,25 @@ Write-Host "✅ Symlink created: $targetLink pointing to $srcDir" -ForegroundCol
 
 # Generate .vscode/launch.json in Ankimon repo (Windows)
 
-# Define template and target file paths
-$templateFile = Join-Path $AnkimonDir '.vscode\launch_windows.json'
-$launchFile   = Join-Path $AnkimonDir '.vscode\launch.json'
+# Copy template from anki-vscode to Ankimon .vscode folder if missing
+$sourceTemplate = Join-Path $CloneDir '.vscode\launch_windows.json'
+$destDir        = Join-Path $AnkimonDir '.vscode'
+$destTemplate   = Join-Path $destDir 'launch_windows.json'
 
-if (-not (Test-Path $templateFile)) {
-    Write-Error "Template file not found at $templateFile. Make sure it exists."
-    exit 1
+if (-not (Test-Path $destTemplate)) {
+    if (-not (Test-Path $destDir)) {
+        New-Item -ItemType Directory -Path $destDir | Out-Null
+    }
+    Copy-Item -Path $sourceTemplate -Destination $destTemplate -Force
 }
 
-# Read template, replace placeholders, and output final JSON
+# Generate the final launch.json using the copied template
+$templateFile = $destTemplate
+$launchFile   = Join-Path $AnkimonDir '.vscode\launch.json'
+
 $content = Get-Content -Path $templateFile -Raw
 $content = $content.Replace('$PROGRAM_PATH$', "$($VenvDir)\Scripts\anki.exe")
-$content = $content.Replace('$DATA_DIR$', "$AnkiBase")
+$content = $content.Replace('$DATA_DIR$',      $AnkiBase)
 $content | Set-Content -Path $launchFile -Encoding UTF8
 
 Write-Host "✅ launch.json configured at: $launchFile" -ForegroundColor Green
