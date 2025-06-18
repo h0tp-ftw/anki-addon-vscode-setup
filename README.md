@@ -1,16 +1,17 @@
 # Anki - VS Code Debugging Integration
-[@RisingOrange](https://github.com/RisingOrange)'s VSCode dev setup for Anki add-ons, forked by me to: 
-- port to newer versions and Qt6
-- use for other add-ons
-- make it easy to set up!
+VSCode dev setup for Anki add-ons, inspired by the work of [@RisingOrange](https://github.com/RisingOrange)
 
 - Great for debugging your add-on development in Anki! (debugging, variable inspections and code changes can be done **live**)
 - Allows for a virtual environment with a new installation of Anki separate from your installation.
 - Cross-platform compatible as long as you have **VS Code** and **pip** available.
+- compatible for newer Anki and Python versions, Qt6, and easy to set up!
 
 # One-Step Commands for Running Setup Scripts
 
 These commands are designed for installation of the [Ankimon (experimental)](https://github.com/h0tp-ftw/ankimon) addon. If you want to run it for another addon, change the REPO_URL which is declared at the top of the setup scripts.
+
+Dependencies: **Python** and **Git**
+
 ## macOS/Linux (Bash)
 
 Run this command in your terminal:
