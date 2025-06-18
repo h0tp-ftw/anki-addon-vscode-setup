@@ -35,8 +35,21 @@ Write-Host ""
 
 # Check for Python (python or py)
 $pythonAvailable = $false
-if (Get-Command python -ErrorAction SilentlyContinue) { $pythonAvailable = $true }
-elseif (Get-Command py -ErrorAction SilentlyContinue) { $pythonAvailable = $true }
+$pythonCmd = $null
+if (Get-Command python -ErrorAction SilentlyContinue) {
+    if ((Get-Command python).Path -like '*WindowsApps*') {
+        Write-Host "❌ Detected Python App Installer stub. This will not work." -ForegroundColor Red
+        Write-Host "Please install Python from python.org." -ForegroundColor Yellow
+    } else {
+        $pythonAvailable = $true
+        $pythonCmd = 'python'
+    }
+}
+
+if (-not $pythonAvailable -and (Get-Command py -ErrorAction SilentlyContinue)) {
+    $pythonAvailable = $true
+    $pythonCmd = 'py'
+}
 
 if ($pythonAvailable) {
     Write-Host "✅ Python is installed and available in your PATH." -ForegroundColor Green
@@ -53,9 +66,9 @@ if ($pythonAvailable) {
     } else {
         Write-Host "2. Download the Windows x86 executable installer (look for 'Windows installer (32-bit)')." -ForegroundColor Cyan
     }
-    Write-Host "3. Run the installer and ensure you check 'Add Python to PATH' during installation." -ForegroundColor Cyan
+    Write-Host "3. Run the installer and **ensure you check 'Add Python to PATH'** during installation." -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "After installing, restart this script." -ForegroundColor Yellow
+    Write-Host "After installing, please restart this script." -ForegroundColor Yellow
     exit 1
 }
 
@@ -75,7 +88,7 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
     }
     Write-Host "3. Follow the default prompts and ensure 'Git from the command line' is enabled." -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "After installing, restart this script." -ForegroundColor Yellow
+    Write-Host "After installing, please restart this script." -ForegroundColor Yellow
     exit 1
 }
 
@@ -85,45 +98,14 @@ $REPO_NAME   = 'anki-vscode'
 $Documents   = [Environment]::GetFolderPath('MyDocuments')
 $DefaultRepo = Join-Path $Documents $REPO_NAME
 
-Write-Host "==== Anki-VSCode Setup for Windows ====" -ForegroundColor Cyan
-
-# Detect Python stub and select interpreter
-$pythonCmd = $null
-$cmd       = Get-Command python -ErrorAction SilentlyContinue
-if ($cmd) {
-    $pythonPath = $cmd.Path
-    if ($pythonPath -like '*WindowsApps*') {
-        Write-Host "Detected Python stub; launching Store installer..." -ForegroundColor Yellow
-        Start-Process -FilePath $pythonPath
-        Write-Error "Please install Python and rerun this script."
-        exit 1
-    } else {
-        $pythonCmd = 'python'
-    }
-}
-if (-not $pythonCmd) {
-    if (Get-Command py -ErrorAction SilentlyContinue) {
-        Write-Host "Using 'py' launcher." -ForegroundColor Cyan
-        $pythonCmd = 'py'
-    } else {
-        Write-Host "Python not found; launching installer prompt..." -ForegroundColor Yellow
-        Start-Process -FilePath 'python'
-        Write-Error "Please install Python and rerun this script."
-        exit 1
-    }
-}
+Write-Host "`n==== Anki-VSCode Project Setup ====" -ForegroundColor Cyan
 
 # Prompt for clone directory
-Write-Host "`nDefault clone location: $DefaultRepo" -ForegroundColor Cyan
+Write-Host "`nDefault clone location for anki-vscode: $DefaultRepo" -ForegroundColor Cyan
 Write-Host "Examples: C:\Users\Name\Documents\my-project | D:\Dev\anki-vscode" -ForegroundColor Yellow
 $InputRepo = Read-Host 'Press Enter to accept default or type custom path'
 $CloneDir  = if ([string]::IsNullOrWhiteSpace($InputRepo)) { $DefaultRepo } else { $InputRepo }
 Write-Host "Cloning to: $CloneDir" -ForegroundColor Green
-
-# Ensure Git is available
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    Write-Error 'Git is not installed or not in PATH.'; exit 1
-}
 
 # Clone or update repository
 if (-not (Test-Path $CloneDir)) {
@@ -180,8 +162,8 @@ $MODE = Read-Host 'Select [1 or 2]'
 
 # Default Ankimon clone location
 $DefaultAnkimon = Join-Path $Documents 'ankimon'
-$AnkimonDir = Read-Host "Press Enter to clone Ankimon under [$DefaultAnkimon], or type custom path"
-if ([string]::IsNullOrWhiteSpace($AnkimonDir)) { $AnkimonDir = $DefaultAnkimon }
+$AnkimonDirInput = Read-Host "Press Enter to clone Ankimon under [$DefaultAnkimon], or type custom path"
+$AnkimonDir = if ([string]::IsNullOrWhiteSpace($AnkimonDirInput)) { $DefaultAnkimon } else { $AnkimonDirInput }
 if (-not (Test-Path $AnkimonDir)) { New-Item -ItemType Directory -Path $AnkimonDir | Out-Null }
 if (-not (Test-Path (Join-Path $AnkimonDir '.git'))) {
     Write-Host "Cloning Ankimon into $AnkimonDir…" -ForegroundColor Green
@@ -198,7 +180,6 @@ if ($MODE -eq '1') {
     Write-Host ""
     Write-Host "Detecting native Anki addons21 directory..." -ForegroundColor Cyan
     $possible = @(
-        "$env:USERPROFILE\.var\app\net.ankiweb.Anki\data\Anki2\addons21",
         "$env:APPDATA\Anki2\addons21",
         "$env:LOCALAPPDATA\Anki2\addons21"
     )
@@ -214,11 +195,11 @@ if ($MODE -eq '1') {
         }
     }
     if (-not $AddonsDir) {
-        Write-Host "Could not auto-detect addons21. It should contain folders like '1908235722' and 'community'." -ForegroundColor Yellow
+        Write-Host "Could not auto-detect addons21. It should contain folders like '1908235722'." -ForegroundColor Yellow
         $AnkiBase = Read-Host "Enter your Anki base directory (parent of addons21)"
         $AddonsDir = Join-Path $AnkiBase 'addons21'
     } else {
-        $AnkiBase = Split-Path $AddonsDir -Parent
+        $AnkiBase = (Get-Item $AddonsDir).Parent.FullName
     }
 } elseif ($MODE -eq '2') {
     Write-Host ""
@@ -235,32 +216,26 @@ if ($MODE -eq '1') {
 # ───────────────────────────────────────────────────────────────────────────
 
 Write-Host ""
-Write-Host "⚠️  IMPORTANT: USER FILES BACKUP REQUIRED ⚠️" -ForegroundColor Red[#]
-Write-Host "Before installing the Ankimon add-on, your existing Ankimon user files in the Anki add-ons directory WILL BE DELETED and replaced." -ForegroundColor Yellow[#]
-Write-Host "You MUST backup the following files from the 'user_files' directory inside your Ankimon add-on folder (if present):" -ForegroundColor Yellow[#]
-Write-Host "  - meta.json" -ForegroundColor Yellow[#]
-Write-Host "  - mypokemon.json" -ForegroundColor Yellow[#]
-Write-Host "  - mainpokemon.json" -ForegroundColor Yellow[#]
-Write-Host "  - badges.json" -ForegroundColor Yellow[#]
-Write-Host "  - items.json" -ForegroundColor Yellow[#]
-Write-Host "  - teams.json (if present)" -ForegroundColor Yellow[#]
-Write-Host "  - data.json (if present)" -ForegroundColor Yellow[#]
-Write-Host "In total, you may have 5 to 7 files to back up depending on your usage." -ForegroundColor Yellow[#]
+Write-Host "⚠️  IMPORTANT: USER FILES BACKUP REQUIRED ⚠️" -ForegroundColor Red
+Write-Host "Before installing, your existing Ankimon user files WILL BE DELETED." -ForegroundColor Yellow
+Write-Host "You MUST backup the following files from the 'user_files' directory:" -ForegroundColor Yellow
+Write-Host "  - meta.json, mypokemon.json, mainpokemon.json, badges.json, items.json" -ForegroundColor Yellow
+Write-Host "  - teams.json and data.json (if they exist)" -ForegroundColor Yellow
 if ($MODE -eq '2') {
-    Write-Host "Note: For a NEW SEPARATE installation (mode 2), backups may not be strictly necessary, but are still **strongly recommended**." -ForegroundColor Yellow[#]
+    Write-Host "Note: For a NEW (mode 2) installation, backup is still strongly recommended." -ForegroundColor Yellow
 }
 Write-Host ""
-$confirm1 = Read-Host "Have you backed up all your user files? Type YES (all caps) to continue" 
+$confirm1 = Read-Host "Have you backed up all your user files? Type YES to continue" 
 if ($confirm1 -ne 'YES') {
-    Write-Host "Aborting installation. Please backup your files before running this script again." -ForegroundColor Red[#]
+    Write-Host "Aborting installation." -ForegroundColor Red
     exit 1
 }
 $confirm2 = Read-Host "FINAL WARNING: Type YES to proceed with deletion and installation" 
 if ($confirm2 -ne 'YES') {
-    Write-Host "Aborting installation. Please backup your files before running this script again." -ForegroundColor Red[#]
+    Write-Host "Aborting installation." -ForegroundColor Red
     exit 1
 }
-Write-Host "Proceeding with Ankimon add-on installation..." -ForegroundColor Green[#]
+Write-Host "Proceeding with Ankimon add-on installation..." -ForegroundColor Green
 
 # ───────────────────────────────────────────────────────────────────────────
 # Symlink src/Ankimon -> addons21/1908235722
@@ -270,33 +245,32 @@ $srcDir     = Join-Path $AnkimonDir 'src\Ankimon'
 $targetLink = Join-Path $AddonsDir '1908235722'
 
 Write-Host ""
-Write-Host "Linking `$srcDir` → `$targetLink`" -ForegroundColor Cyan[#]
+Write-Host "Linking `$srcDir` → `$targetLink`" -ForegroundColor Cyan
 if (Test-Path $targetLink) {
-    Write-Host "Removing existing link or folder at `$targetLink`..." -ForegroundColor Yellow[#]
+    Write-Host "Removing existing link or folder at `$targetLink`..." -ForegroundColor Yellow
     Remove-Item -Recurse -Force $targetLink
 }
 New-Item -ItemType SymbolicLink -Path $targetLink -Target $srcDir | Out-Null
-Write-Host "✅ Symlink created: $targetLink → $srcDir" -ForegroundColor Green[#]
+Write-Host "✅ Symlink created: $targetLink → $srcDir" -ForegroundColor Green
 
 # ───────────────────────────────────────────────────────────────────────────
 # Generate .vscode/launch.json in Ankimon repo (Windows)
 # ───────────────────────────────────────────────────────────────────────────
 
-# Ensure .vscode folder exists
-$launchDir   = Join-Path $AnkimonDir '.vscode'
-if (-not (Test-Path $launchDir)) {
-    New-Item -ItemType Directory -Path $launchDir | Out-Null
+# Define template and target file paths
+$templateFile = Join-Path $AnkimonDir '.vscode\launch_windows.json'
+$launchFile   = Join-Path $AnkimonDir '.vscode\launch.json'
+
+if (-not (Test-Path $templateFile)) {
+    Write-Error "Template file not found at $templateFile. Make sure it exists."
+    exit 1
 }
 
-# Define template and target file paths
-$templateFile = Join-Path $launchDir 'launch_windows.json'
-$launchFile   = Join-Path $launchDir 'launch.json'
-
 # Read template, replace placeholders, and output final JSON
-(Get-Content $templateFile) `
-  -replace '\$PROGRAM_PATH\$', "$VenvDir\Scripts\anki.exe" `
-  -replace '\$DATA_DIR\$',       "$AnkiBase"             |
-  Set-Content -Path $launchFile -Encoding UTF8
+$content = Get-Content -Path $templateFile -Raw
+$content = $content.Replace('$PROGRAM_PATH$', "$($VenvDir)\Scripts\anki.exe")
+$content = $content.Replace('$DATA_DIR$', $AnkiBase)
+$content | Set-Content -Path $launchFile -Encoding UTF8
 
 Write-Host "✅ launch.json configured at: $launchFile" -ForegroundColor Green
 
@@ -308,19 +282,17 @@ Write-Host ""
 Write-Host "✅ Ankimon add-on installed at: $targetLink" -ForegroundColor Green
 Write-Host "✅ Launch configuration created at: $launchFile" -ForegroundColor Green
 Write-Host ""
-Write-Host "Your venv Python binary path (to be used as interpreter): $VenvDir\Scripts\anki.exe" -ForegroundColor Cyan
+Write-Host "Your venv Python binary path (to be used as interpreter): $($VenvDir)\Scripts\python.exe" -ForegroundColor Cyan
 Write-Host "Anki data dir: $AnkiBase" -ForegroundColor Cyan
-Write-Host "Your virtual environment Anki: $VenvDir\Scripts\anki.exe" -ForegroundColor Cyan
+Write-Host "Your virtual environment Anki: $($VenvDir)\Scripts\anki.exe" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Cyan
-Write-Host "1. Open the folder $AnkimonDir in VS Code (File > Open Folder) and navigate to the __init__.py file for the add-on." -ForegroundColor Cyan
-Write-Host "2. In VS Code, press Ctrl+Shift+P, type Python - Select Interpreter, and set $VenvDir\Scripts\anki.exe as your interpreter." -ForegroundColor Cyan
-Write-Host "3. Start debugging: click the dropdown next to the Start button, choose Python Anki, and debug via launch.json." -ForegroundColor Cyan
-Write-Host "If everything goes well, Python Anki should appear as the debug configuration and Anki will open with your add-on loaded." -ForegroundColor Cyan
+Write-Host "1. Open the folder '$AnkimonDir' in VS Code (File > Open Folder)." -ForegroundColor Cyan
+Write-Host "2. In VS Code, press Ctrl+Shift+P, type 'Python: Select Interpreter', and set the path to: $($VenvDir)\Scripts\python.exe" -ForegroundColor Cyan
+Write-Host "3. Start debugging: click the Run and Debug icon, choose 'Python Anki' from the dropdown, and press Start." -ForegroundColor Cyan
+Write-Host "If everything went well, Anki will open with your add-on loaded." -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Please save the info above for future reference!" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Thanks for using the tool, hope it helps <3 - h0tp" -ForegroundColor Magenta
 Write-Host ""
-
-# ───────────────────────────────────────────────────────────────────────────
