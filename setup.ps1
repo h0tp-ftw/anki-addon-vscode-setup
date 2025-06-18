@@ -246,17 +246,14 @@ $srcDir     = Join-Path $AnkimonDir 'src\Ankimon'
 $targetLink = Join-Path $AddonsDir '1908235722'
 
 Write-Host ""
-Write-Host "Linking $srcDir to the directory $targetLink" -ForegroundColor Cyan
+Write-Host "Linking `$srcDir` to the directory `$targetLink` " -ForegroundColor Cyan
 if (Test-Path $targetLink) {
-    Write-Host "Removing existing link or folder at $targetLink..." -ForegroundColor Yellow
+    Write-Host "Removing existing link or folder at `$targetLink`..." -ForegroundColor Yellow
     Remove-Item -Recurse -Force $targetLink
 }
 New-Item -ItemType SymbolicLink -Path $targetLink -Target $srcDir | Out-Null
 Write-Host "✅ Symlink created: $targetLink pointing to $srcDir" -ForegroundColor Green
 
-# Generate .vscode/launch.json in Ankimon repo (Windows)
-
-# Copy template from anki-vscode to Ankimon .vscode folder if missing
 $sourceTemplate = Join-Path $CloneDir '.vscode\launch_windows.json'
 $destDir        = Join-Path $AnkimonDir '.vscode'
 $destTemplate   = Join-Path $destDir 'launch_windows.json'
