@@ -32,6 +32,9 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\setup.ps1
 ```
 
+Although this is not good security practice, I have set it up like this to allow for new contributors to easily be able to set up a debugging environment for Ankimon.
+If you are concerned, you can follow the detailed steps given below. 
+
 [![Star History Chart](https://api.star-history.com/svg?repos=h0tp-ftw/anki-vscode&type=Date)](https://www.star-history.com/#h0tp-ftw/anki-vscode&Date)
 
 ## Screenshot of me using it in Ankimon
