@@ -40,7 +40,7 @@ Click on the image below (it is a VIDEO) to watch how I installed it on my devic
 
 Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't know how to DM on GitHub - I wanted to send a thank-you message.
 
-# How to use
+# How to set up step-by-step
 ## Setting up virtual Python environment
 - clone this repository to your device
 
@@ -84,7 +84,7 @@ WINDOWS : `venv\Scripts\activate`
 
 - use the `Python: Select interpreter` VSCode action to set the python interpreter to the one in the just created virtual environemnt (to your venv/bin/python binary)
 
-- in the `__init.py__` file, use the function `Python Debugger: Debug using launch.json` to start debugging ! It may also show up as the name "Python 2.7 Anki", you might have to pick it every time before debugging. 
+- in the `__init.py__` file, use the function `Python Debugger: Debug using launch.json` to start debugging ! It may also show up as the name "Python Anki", you might have to pick it every time before debugging. 
 
 If Anki opens up when you do the debugging, CONGRATULATIONS! 
 
