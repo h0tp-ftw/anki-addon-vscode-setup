@@ -18,6 +18,13 @@ Write-Host ""
 
 $ErrorActionPreference = 'Stop'
 
+# Check for Administrator privileges
+$IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-not $IsAdmin) {
+    Write-Host "❌ This script must be run as Administrator. Please right-click PowerShell and select 'Run as administrator'." -ForegroundColor Red
+    exit 1
+}
+
 # Detect system architecture (x64, ARM64, x86)
 $arch = (Get-CimInstance Win32_OperatingSystem).OSArchitecture
 if ($arch -match "64") {
