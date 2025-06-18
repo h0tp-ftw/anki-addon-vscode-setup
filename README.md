@@ -67,14 +67,14 @@ WINDOWS : `venv\Scripts\activate`
 
 ```pip install -r requirements.txt```
 
-- try running Anki in terminal by using command `anki`, it should work and it should be separate than your usual Anki installation ! 
+- try running Anki in terminal by using command `anki` or `./anki` in the virtual environment, it should work and it should be separate than your usual Anki installation ! 
 
 ## Setting up addon environment
-- open Anki in terminal, and go to Add-Ons -> View Files to see where addons are stored (addons21). **Note that you can CHANGE this directory using the launch.json file shown below, so you can change the directory for it later and then follow the next step accordingly.**
+- choose the directory where Anki data can be stored. This can be your native installation (Anki2 folder) or a new folder to keep it as a separate installation. **Note that you can CHANGE this directory using the launch.json file shown below, so you can change the directory for it later and then follow the next step accordingly.**
 
-- in this folder, either **add a symlink to your addon folder**, or a **copied folder of your addon**, or a **GitHub clone/branch of your addon** - it is upto you.
+- in this folder, make an `addons21` folder (if it is not there already) and either **add a symlink to your addon folder**, or **add a symlink to the GitHub clone/branch of your addon** - it is upto you.
 
-#1 allows to sync changes with your native install, #2 is safer but you may have different environment or configurations, and #3 gives you great tracking but all addon files will be synced (sometimes thousands of changes can happen).
+#1 allows to sync changes with your native install, and #2 gives you great tracking but all addon files will be synced (sometimes thousands of changes can happen), so make sure your addon has a properly configured .gitignore file.
 
 - now open the folder in VS Code. So you can open addon folder directly or the folder above it, whatever is convenient for you. 
 
@@ -98,11 +98,11 @@ Once you learn about debugging, it can be very valuable to get your code tested 
 You can also repeat this guide to create multiple environments for your Anki add-ons !
 
 ## Limitations
-- Anki addons can change thousands of files, so you should use this to test code changes and use another workspace to commit changes. Directly committing from this can be messy.
+- Anki addons can change thousands of files, so you should use this to test code changes and use another workspace to commit changes. Directly committing from this can be messy. MAKE SURE YOUR ADDON HAS A PROPERLY SET-UP GITIGNORE FILE THAT IGNORES ANY USER FILES.
 - Make sure to test your changes in native Anki before making any commits! It is in a Python environment that is partially isolated from the system, so behaviour can be slightly different than system installations.
 - ALWAYS debug using the init file! You can still debug other files, e.g. adding breakpoints and checking variables, but you have to start debugging at init file. 
 
-If you see errors in package importing, likely that you didn't install all packages
+If you see errors in package importing, likely that you didn't install all packages OR you didn't choose the correct interpreter path.
 
 If you see errors in importing from relative paths, likely that you misconfigured the paths, or you are not linking the launch.json file 
 
