@@ -260,7 +260,7 @@ Write-Host "Anki data dir: $AnkiBase" -ForegroundColor Cyan
 Write-Host "Your virtual environment Anki: $VenvDir\Scripts\anki.exe" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Cyan
-Write-Host "1. Open the folder '$AnkimonDir' in VS Code (File > Open Folder) and navigate to the __init__.py file for the add-on." -ForegroundColor Cyan
+Write-Host "1. Open the folder $AnkimonDir in VS Code (File > Open Folder) and navigate to the __init__.py file for the add-on." -ForegroundColor Cyan
 Write-Host "2. In VS Code, press Ctrl+Shift+P, type Python - Select Interpreter, and set $VenvDir\Scripts\anki.exe as your interpreter." -ForegroundColor Cyan
 Write-Host "3. Start debugging: click the dropdown next to the Start button, choose Python Anki, and launch via launch.json." -ForegroundColor Cyan
 Write-Host "If everything goes well, Python Anki should appear as the debug configuration and Anki will open with your add-on loaded." -ForegroundColor Cyan
