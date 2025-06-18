@@ -10,6 +10,7 @@
 
 # One-Step Commands for Running Setup Scripts
 
+These commands are designed for installation of the [Ankimon (experimental)](https://github.com/h0tp-ftw/ankimon) addon. If you want to run it for another addon, change the REPO_URL which is declared at the top of the setup scripts.
 ## macOS/Linux (Bash)
 
 Run this command in your terminal:
