@@ -68,7 +68,7 @@ if ($pythonAvailable) {
     }
     Write-Host "3. Run the installer and **MAKE SURE YOU CHECK THE OPTION 'Add Python to PATH'** during installation." -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "After installing, please restart this script." -ForegroundColor Yellow
+    Write-Host "After installing, please restart this script (and your PowerShell)." -ForegroundColor Yellow
     exit 1
 }
 
@@ -86,9 +86,9 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
     } else {
         Write-Host "2. Download the '64-bit Git for Windows Setup' for x64, or '32-bit Git for Windows Setup' for x86." -ForegroundColor Cyan
     }
-    Write-Host "3. Follow the default prompts and ensure 'Git from the command line' is enabled." -ForegroundColor Cyan
+    Write-Host "3. Follow all the default prompts for its installation." -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "After installing, please restart this script." -ForegroundColor Yellow
+    Write-Host "After installing, please restart this script (and your PowerShell)." -ForegroundColor Yellow
     exit 1
 }
 
