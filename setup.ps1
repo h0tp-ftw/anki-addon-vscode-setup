@@ -21,7 +21,7 @@ $ErrorActionPreference = 'Stop'
 # Check for Administrator privileges
 $IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $IsAdmin) {
-    Write-Host "❌ This script must be run as Administrator. Please right-click PowerShell and select 'Run as administrator'." -ForegroundColor Red
+    Write-Host "This script must be run as Administrator. Please right-click PowerShell and select 'Run as administrator'." -ForegroundColor Red
     exit 1
 }
 
@@ -45,7 +45,7 @@ $pythonAvailable = $false
 $pythonCmd = $null
 if (Get-Command python -ErrorAction SilentlyContinue) {
     if ((Get-Command python).Path -like '*WindowsApps*') {
-        Write-Host "❌ Detected Python App Installer stub. This will not work." -ForegroundColor Red
+        Write-Host "Detected Python App Installer stub. This will not work." -ForegroundColor Red
         Write-Host "Please install Python from python.org." -ForegroundColor Yellow
     } else {
         $pythonAvailable = $true
@@ -59,9 +59,9 @@ if (-not $pythonAvailable -and (Get-Command py -ErrorAction SilentlyContinue)) {
 }
 
 if ($pythonAvailable) {
-    Write-Host "✅ Python is installed and available in your PATH." -ForegroundColor Green
+    Write-Host "Python is installed and available in your PATH." -ForegroundColor Green
 } else {
-    Write-Host "❌ Python is not installed or not in your PATH." -ForegroundColor Red
+    Write-Host "Python is not installed or not in your PATH." -ForegroundColor Red
     Write-Host "Python (with pip) is required to continue." -ForegroundColor Yellow
     Write-Host ""
     Write-Host "To install Python ($archString recommended):" -ForegroundColor Cyan
@@ -81,9 +81,9 @@ if ($pythonAvailable) {
 
 # Check for Git
 if (Get-Command git -ErrorAction SilentlyContinue) {
-    Write-Host "✅ Git is installed and available in your PATH." -ForegroundColor Green
+    Write-Host "Git is installed and available in your PATH." -ForegroundColor Green
 } else {
-    Write-Host "❌ Git is not installed or not in your PATH." -ForegroundColor Red
+    Write-Host "Git is not installed or not in your PATH." -ForegroundColor Red
     Write-Host "Git is required to clone repositories." -ForegroundColor Yellow
     Write-Host ""
     Write-Host "To install Git ($archString recommended):" -ForegroundColor Cyan
@@ -161,8 +161,10 @@ Write-Host "======================================`n" -ForegroundColor Cyan
 
 Write-Host ""
 Write-Host "Ankimon Add-on Installation Mode" -ForegroundColor Cyan
-Write-Host "1) Native Anki installation (detect and use your system’s addons21)" -ForegroundColor Yellow
-Write-Host "2) Separate Anki installation (you specify a base directory)" -ForegroundColor Yellow
+Write-Host "1) Native Anki installation (detect and use your system’s addons21). This will use your existing Anki installation for all the files and addons." -ForegroundColor Yellow
+Write-Host "2) Separate Anki installation (you specify a base directory). This will make an entirely new Anki installation, separate from your normal Anki installation." -ForegroundColor Yellow
+Write-Host "Both options are good. 1. is more convenient and mimics your actual installation, and 2. is isolated from your install, and messing up your addon will not affect your normal installation." -ForegroundColor Yellow
+Write-Host ""
 $MODE = Read-Host 'Select [1 or 2]'
 
 # Default Ankimon clone location
@@ -200,15 +202,15 @@ if ($MODE -eq '1') {
         }
     }
     if (-not $AddonsDir) {
-        Write-Host "Could not auto-detect addons21. It should contain folders like '1908235722'." -ForegroundColor Yellow
-        $AnkiBase = Read-Host "Enter your Anki base directory (parent of addons21)"
+        Write-Host "Could not auto-detect addons21. It should contain folders like '1908235722' (for Ankimon)." -ForegroundColor Yellow
+        $AnkiBase = Read-Host "Enter your Anki base directory (this folder should contain a folder named addons21)"
         $AddonsDir = Join-Path $AnkiBase 'addons21'
     } else {
         $AnkiBase = (Get-Item $AddonsDir).Parent.FullName
     }
 } elseif ($MODE -eq '2') {
     Write-Host ""
-    $AnkiBase = Read-Host "Enter your Anki base directory (will contain addons21)"
+    $AnkiBase = Read-Host "Enter your Anki base directory where you want to store the new Anki installation. (It will get an addons21 folder with a symlinked version of Ankimon)"
     $AddonsDir = Join-Path $AnkiBase 'addons21'
     if (-not (Test-Path $AddonsDir)) { New-Item -ItemType Directory -Path $AddonsDir | Out-Null }
 } else {
@@ -219,7 +221,7 @@ if ($MODE -eq '1') {
 # User Backup Warning and Double Confirmation
 
 Write-Host ""
-Write-Host "⚠️  IMPORTANT: USER FILES BACKUP REQUIRED ⚠️" -ForegroundColor Red
+Write-Host "IMPORTANT: USER FILES BACKUP REQUIRED" -ForegroundColor Red
 Write-Host "Before installing, your existing Ankimon user files WILL BE DELETED." -ForegroundColor Yellow
 Write-Host "You MUST backup the following files from the 'user_files' directory:" -ForegroundColor Yellow
 Write-Host "  - meta.json, mypokemon.json, mainpokemon.json, badges.json, items.json" -ForegroundColor Yellow
@@ -252,7 +254,7 @@ if (Test-Path $targetLink) {
     Remove-Item -Recurse -Force $targetLink
 }
 New-Item -ItemType SymbolicLink -Path $targetLink -Target $srcDir | Out-Null
-Write-Host "✅ Symlink created: $targetLink pointing to $srcDir" -ForegroundColor Green
+Write-Host "Symlink created: $targetLink pointing to $srcDir" -ForegroundColor Green
 
 $sourceTemplate = Join-Path $CloneDir '.vscode\launch_windows.json'
 $destDir        = Join-Path $AnkimonDir '.vscode'
@@ -274,13 +276,13 @@ $content = $content.Replace('$PROGRAM_PATH$', "$($VenvDir)\Scripts\anki.exe")
 $content = $content.Replace('$DATA_DIR$',      $AnkiBase)
 $content | Set-Content -Path $launchFile -Encoding UTF8
 
-Write-Host "✅ launch.json configured at: $launchFile" -ForegroundColor Green
+Write-Host "launch.json configured at: $launchFile" -ForegroundColor Green
 
 # Final Confirmation & User Guidance
 
 Write-Host ""
-Write-Host "✅ Ankimon add-on installed at: $targetLink" -ForegroundColor Green
-Write-Host "✅ Launch configuration created at: $launchFile" -ForegroundColor Green
+Write-Host "Ankimon add-on installed at: $targetLink" -ForegroundColor Green
+Write-Host "Launch configuration created at: $launchFile" -ForegroundColor Green
 Write-Host ""
 Write-Host "Your venv Python binary path (to be used as interpreter): $($VenvDir)\Scripts\python.exe" -ForegroundColor Cyan
 Write-Host "Anki data dir: $AnkiBase" -ForegroundColor Cyan
@@ -289,7 +291,7 @@ Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Cyan
 Write-Host "1. Open the folder $AnkimonDir in VS Code (File > Open Folder)." -ForegroundColor Cyan
 Write-Host ("2. In VS Code, press Ctrl+Shift+P, type Python - Select Interpreter, and set the path to {0}\Scripts\python.exe" -f $VenvDir) -ForegroundColor Cyan
-Write-Host "3. Start debugging: click the dropdown on the right of the Start icon, click Debug using launch.json, then choose Python Anki from the dropdown, and press Start." -ForegroundColor Cyan
+Write-Host "3. Start debugging: click the Run and Debug icon, choose Python Anki from the dropdown, and press Start." -ForegroundColor Cyan
 Write-Host 'If everything went well, Anki will open with your add-on loaded.' -ForegroundColor Cyan
 Write-Host ""
 Write-Host 'Please save the info above for future reference!' -ForegroundColor Cyan
