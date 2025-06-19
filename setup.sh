@@ -250,7 +250,7 @@ if [ "$CONFIRM1" != "YES" ]; then
     echo "Aborting installation. Please backup your files before running this script again." > /dev/tty
     exit 1
 fi
-echo -n "This is your FINAL WARNING. Are you absolutely sure you have backed up your user files? Type YES (in all caps) to proceed: " > /dev/tty
+echo -n "This is your FINAL WARNING. Your current add-on will be DELETED and replaced with the GitHub version. Are you absolutely sure you have backed up your user files? Type YES (in all caps) to proceed: " > /dev/tty
 read CONFIRM2 < /dev/tty
 if [ "$CONFIRM2" != "YES" ]; then
     echo "Aborting installation. Please backup your files before running this script again." > /dev/tty
@@ -259,17 +259,22 @@ fi
 echo "Proceeding with Ankimon add-on installation..." > /dev/tty
 # ───────────────────────────────────────────────────────────────────────────
 
-
 # Symlink src/Ankimon -> addons21/1908235722
 SRC_DIR="$ANKIMON_DIR/src/Ankimon"
 TARGET_LINK="$ADDONS_DIR/1908235722"
 
 echo "Linking $SRC_DIR -> $TARGET_LINK"
-# Use -n to avoid clobbering existing directory, -f to overwrite stale link
-ln -sfn "$SRC_DIR" "$TARGET_LINK" \
+
+# Remove existing directory or symlink at target
+if [ -e "$TARGET_LINK" ] || [ -L "$TARGET_LINK" ]; then
+    echo "Removing existing directory or symlink at $TARGET_LINK"
+    rm -rf "$TARGET_LINK"
+fi
+
+ln -s "$SRC_DIR" "$TARGET_LINK" \
   && echo "Symlink created successfully." \
   || { 
-       echo "⚠️  Failed to link. Please backup $TARGET_LINK and try again.";
+       echo "Failed to link. Please backup $TARGET_LINK and try again.";
        exit 1;
      }
 
@@ -311,6 +316,7 @@ echo "1. Open the folder '$ANKIMON_DIR' in VS Code (File -> Open Folder, and ope
 echo "2. Set $VENV_DIR/bin/python as your Python interpreter path (in VS Code, type >interpreter in top bar and select Python: Select Interpreter)"
 echo "3. Now run the debug mode using the launch.json file - Go to top right, press the dropdown on the right of the Start button, and click Debug using launch.json"
 echo "If everything went well, "Python Anki" should pop up as the config. After clicking that, Anki should open properly and your addon should be available!"
+echo "Make sure that both instances of Anki are not running together - ONLY have the Native OR the VS Code debugging Anki running at one time."
 echo ""
 echo "Please save the info above for future reference!"
 echo ""
