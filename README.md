@@ -33,7 +33,7 @@ Prerequisites: **VS Code**, **Python** and **Git**
 
 # Quick Start
 
-These commands are designed for installation of the [Ankimon (experimental)](https://github.com/h0tp-ftw/ankimon) add-on. Please follow the steps below in the "How to set up step-by-step" section for other add-ons.
+These commands are designed for installation of the [Ankimon (experimental)](https://github.com/h0tp-ftw/ankimon) add-on. Please follow the steps below in the "Manual Setup" section for other add-ons.
 
 ## macOS/Linux (Bash)
 
@@ -72,7 +72,7 @@ Imagine if you opened the add-on in VS Code, and found out that files for your p
 
 NOTE that to be compatible with the methods here, your add-on must be set up so that cache files, user data files, and other files (which are not supposed to be pushed to the add-on release on GitHub) are NOT PRESENT in the GitHub repo, and are properly ignored from tracking through a .gitignore file. If you need to regenerate those files when the user uses the add-on for the first time, you can add functions to check if the file is present, and if not, dump the info from a Python function into that file. 
 
-Once you do this, test it out by setting up the integration as given below. If set up correctly, after using your add-on, your tracked changes will not show any user data files or cache files that were altered by using the add-on.
+Once you do this, test it out by setting up the integration as given below. If set up correctly, after using your add-on, your tracked changes will not show any user data files or cache files that were altered by using the add-on. In other words, if you're using the add-on normally and make any code changes, only the code changes should show up and not any personal files.
 
 # Manual Setup
 <details>
