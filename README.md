@@ -1,16 +1,16 @@
 # Anki - VS Code Debugging Integration
-VSCode dev setup for Anki add-ons, inspired by the work of [@RisingOrange](https://github.com/RisingOrange)
+VSCode setup for debugging Anki add-ons, making add-on development more efficient!
 
-- Great for debugging your add-on development in Anki! (debugging, variable inspections and code changes can be done **live**)
-- Allows for a virtual environment with a new installation of Anki separate from your installation.
-- Cross-platform compatible as long as you have **VS Code** and **pip** available.
-- compatible for newer Anki and Python versions, Qt6, and easy to set up!
+- Debugging via breakpoints, variable inspections and code fixes can be done **live**
+- Test code in Anki and make code changes directly within VS Code
+- Quickly switch to other branches, tags and versions for your addon
+- Cross-platform compatible and easy to set up!
 
 # One-Step Commands for Running Setup Scripts
 
 These commands are designed for installation of the [Ankimon (experimental)](https://github.com/h0tp-ftw/ankimon) addon. Please follow the steps below in the "How to set up step-by-step" section for other addons.
 
-Dependencies: **Python** and **Git**
+Dependencies: **VS Code** (duh), **Python** and **Git**
 
 ## macOS/Linux (Bash)
 
@@ -46,6 +46,17 @@ Click on the image below (it is a VIDEO) to watch how I installed it on my devic
 
 Huge thanks to [RisingOrange](https://github.com/RisingOrange) for this. I don't know how to DM on GitHub - I wanted to send a thank-you message.
 
+## List of addons compatible with this setup
+- Ankimon (Experimental) - [h0tp-ftw/ankimon](https://github.com/h0tp-ftw/ankimon) - v1.396E and above
+- your addon could be here O_o
+
+## How to make your addon compatible 
+Imagine if you opened the addon in VS Code, and found out that files for your personal info are being tracked, and are considered in a push/pull/PR! That would be a disaster 😅
+
+NOTE that to be compatible with the methods here, your addon must be set up so that cache files, user data files, and other files (which are not supposed to be pushed to the addon release on GitHub) are NOT PRESENT in the GitHub repo, and are properly ignored from tracking through a .gitignore file. If you need to regenerate those files when the user uses the addon for the first time, you can add functions to check if the file is present, and if not, dump the info from a Python function into that file. 
+
+Once you do this, test it out by setting up the integration as given below. If set up correctly, after using your addon, your tracked changes will not show any user data files or cache files that were altered by using the addon.
+
 # How to set up step-by-step
 ## Setting up virtual Python environment
 - clone this repository to your device
@@ -71,13 +82,13 @@ WINDOWS : `venv\Scripts\activate`
 - try running Anki in terminal by using command `anki` or `./anki` in the virtual environment, it should work and it should be separate than your usual Anki installation ! 
 
 ## Setting up addon environment
-- choose the directory where Anki data can be stored. This can be your native installation (Anki2 folder) or a new folder to keep it as a separate installation. **Note that you can CHANGE this directory using the launch.json file shown below, so you can change the directory for it later and then follow the next step accordingly.**
+- clone the repo for your addon to your device, any folder of your choice. Make sure your addon is compatible with this integration -    
+- choose the directory where Anki data can be stored. This can be your native installation (Anki2 folder), or a new folder to keep it as a separate Anki installation. **Note that later, we will choose this directory using the launch.json file.**
 
-- in this folder, make an `addons21` folder (if it is not there already) and either **add a symlink to your addon folder**, or **add a symlink to the GitHub clone/branch of your addon** - it is upto you.
+- in this folder, make an `addons21` folder (if it is not there already) and **add a symlink to the correct addon folder for the GitHub clone/branch of your addon**.
+  For example, if your github repo is h0tp-ftw/ankimon and the directory structure is repo / src / Ankimon for the actual addon content (which is to be used as the addon directory in a native install), then the symlink should point to wherever that folder is in your system. 
 
-#1 allows to sync changes with your native install, and #2 gives you great tracking but all addon files will be synced (sometimes thousands of changes can happen), so make sure your addon has a properly configured .gitignore file.
-
-- now open the folder in VS Code. So you can open addon folder directly or the folder above it, whatever is convenient for you. 
+- now open the folder where you cloned the repo. (Not the addon folder or Anki folder - the folder where you cloned your addon repo to)
 
 - after opening, you should see a new `.vscode` folder has been added !
 
@@ -86,7 +97,9 @@ WINDOWS : `venv\Scripts\activate`
 - open the `launch.json` file and edit it to change the Anki directory and to link to the anki binary in venv/bin. Make sure to have the FULL directory, not relative paths. You can also link Anki directory to your native install - to get the same experience, files and addons as native.
 
 ## Debugging addon code using virtual Python environment 
-- open the `__init.py__` file for the addon. Note - this is the file we have to use to start our debugging! 
+- in VS Code, open the folder where you cloned the repo to.
+  
+- within that VS Code window, navigate to the `__init.py__` file for the addon. Note - this is the file we have to open to start our debugging! 
 
 - use the `Python: Select interpreter` VSCode action to set the python interpreter to the one in the just created virtual environemnt (to your venv/bin/python binary)
 
