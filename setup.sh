@@ -303,21 +303,69 @@ cat > "$LAUNCH_DIR/launch.json" <<EOF
 }
 EOF
 
+# Define colors for better output
+CYAN='\e[1;36m'
+YELLOW='\e[1;33m'
+GREEN='\e[1;32m'
+NC='\e[0m' # No Color
+
 echo
-echo "✅ Ankimon add-on installed at: $TARGET_LINK"
-echo "✅ Launch configuration created at: $LAUNCH_DIR/launch.json"
+echo "The automated setup is complete. Now, I will guide you through the final manual steps in VS Code."
 echo
-echo "Your venv Python binary path (to be used as interpreter): $VENV_DIR/bin/python"
-echo "Anki data dir: $ANKI_BASE"
-echo "Your virtual environment Anki: $VENV_DIR/bin/anki"
-echo ""
-echo "Next steps:"
-echo "1. Open the folder '$ANKIMON_DIR' in VS Code (File -> Open Folder, and open that folder) and go to the __init__.py file for the addon."
-echo "2. Set $VENV_DIR/bin/python as your Python interpreter path (in VS Code, type >interpreter in top bar and select Python: Select Interpreter)"
-echo "3. Now run the debug mode using the launch.json file - Go to top right, press the dropdown on the right of the Start button, and click Debug using launch.json"
-echo "If everything went well, "Python Anki" should pop up as the config. After clicking that, Anki should open properly and your addon should be available!"
-echo "Make sure that both instances of Anki are not running together - ONLY have the Native OR the VS Code debugging Anki running at one time."
-echo ""
+
+# --- STEP 1: Open the Folder ---
+echo -e "${YELLOW}--- STEP 1: Open the Ankimon Project in VS Code ---${NC}"
+echo "Please open Visual Studio Code."
+echo "In VS Code, go to 'File' > 'Open Folder...' and select the Ankimon directory."
+echo -e "The correct folder path is: ${CYAN}$ANKIMON_DIR${NC}"
+echo "To confirm that it is correct, go to the Source Control tab (Ctrl + Shift + G). If it is correct, it will show you the Changes tab and a Graph of commits in the lower field. "
+echo "If it tells you to Initialize Repository or Open Folder, you have the wrong folder."
+echo
+echo -n "Press Enter once you have the Ankimon folder open in VS Code..." > /dev/tty
+read -r < /dev/tty
+
+# --- STEP 2: Select the Python Interpreter ---
+echo
+echo -e "${YELLOW}--- STEP 2: Select the Python Interpreter ---${NC}"
+echo "This is a crucial step. We need to tell VS Code to use the Python from our new virtual environment."
+echo "1. In VS Code, press ${CYAN}Ctrl+Shift+P${NC} (or ${CYAN}Cmd+Shift+P${NC} on macOS) to open the Command Palette."
+echo "2. Type ${CYAN}Python: Select Interpreter${NC} and press Enter."
+echo "3. A list of Python interpreters will appear. Click on ${CYAN}'Enter interpreter path...'${NC}"
+echo "4. Paste the following path into the input box and press Enter:"
+echo -e "   ${CYAN}$VENV_DIR/bin/python${NC}"
+echo
+echo "After this, you should see the correct Python version in the bottom-right corner of VS Code."
+echo " The imports on your file (like import aqt) should also be resolved now."
+echo
+echo -n "Press Enter once you have set the interpreter..." > /dev/tty
+read -r < /dev/tty
+
+# --- STEP 3: Start Debugging ---
+echo
+echo -e "${YELLOW}--- STEP 3: Start Debugging ---${NC}"
+echo "Now, let's launch Anki with the debugger attached."
+echo "1. Click on the 'Run and Debug' icon in the left sidebar (it looks like a play button with a bug) (Ctrl+Shift+D or Cmd+Shift+D)."
+echo "2. At the top of the Run and Debug panel, you should see a green play button next to a dropdown."
+echo "3. The dropdown should already say ${GREEN}'Python Anki'${NC}. If not, select it from the list."
+echo "4. Click the green play button to start debugging."
+echo
+echo "Anki should now open with your Ankimon add-on loaded."
+echo
+echo -n "Press Enter once Anki has started..." > /dev/tty
+read -r < /dev/tty
+
+# --- FINAL CONFIRMATION ---
+echo
+echo -e "${GREEN}=====================================================================${NC}"
+echo -e "${GREEN}  Congratulations! Your debugging environment is fully configured!${NC}"
+echo -e "${GREEN}=====================================================================${NC}"
+echo
+echo "Here is a summary of your setup for future reference:"
+echo -e "  - ${CYAN}Add-on Source:${NC} $ANKIMON_DIR"
+echo -e "  - ${CYAN}Virtual Env:${NC}   $VENV_DIR"
+echo -e "  - ${CYAN}Interpreter Path:${NC}   $VENV_DIR"
+echo -e "  - ${CYAN}Anki Data Directory:${NC} $ANKI_BASE"
+echo
 echo "Please save the info above for future reference!"
 echo ""
 echo "Thanks for using the tool, hope it helps <3 - h0tp"

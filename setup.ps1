@@ -280,21 +280,70 @@ Write-Host "launch.json configured at: $launchFile" -ForegroundColor Green
 
 # Final Confirmation & User Guidance
 
+# --- STEP 1: Open the Folder ---
+Write-Host "--- STEP 1: Open the Ankimon Project in VS Code ---" -ForegroundColor $YELLOW
+Write-Host "Please open Visual Studio Code."
+Write-Host "In VS Code, go to 'File' > 'Open Folder...' and select the Ankimon directory."
+Write-Host "The correct folder path is: " -NoNewline
+Write-Host "$AnkimonDir" -ForegroundColor $CYAN
+Write-Host "To confirm that it is correct, go to the Source Control tab (Ctrl + Shift + G). If it is correct, it will show you the Changes tab and a Graph of commits in the lower field."
+Write-Host "If it tells you to Initialize Repository or Open Folder, you have the wrong folder."
 Write-Host ""
-Write-Host "Ankimon add-on installed at: $targetLink" -ForegroundColor Green
-Write-Host "Launch configuration created at: $launchFile" -ForegroundColor Green
+Write-Host "Press Enter once you have the Ankimon folder open in VS Code..." -NoNewline
+$null = Read-Host
+
+# --- STEP 2: Select the Python Interpreter ---
 Write-Host ""
-Write-Host "Your venv Python binary path (to be used as interpreter): $($VenvDir)\Scripts\python.exe" -ForegroundColor Cyan
-Write-Host "Anki data dir: $AnkiBase" -ForegroundColor Cyan
-Write-Host "Your virtual environment Anki: $($VenvDir)\Scripts\anki.exe" -ForegroundColor Cyan
+Write-Host "--- STEP 2: Select the Python Interpreter ---" -ForegroundColor $YELLOW
+Write-Host "This is a crucial step. We need to tell VS Code to use the Python from our new virtual environment."
+Write-Host "1. In VS Code, press " -NoNewline
+Write-Host "Ctrl+Shift+P" -ForegroundColor $CYAN -NoNewline
+Write-Host " to open the Command Palette."
+Write-Host "2. Type " -NoNewline
+Write-Host "Python: Select Interpreter" -ForegroundColor $CYAN -NoNewline
+Write-Host " and press Enter."
+Write-Host "3. A list of Python interpreters will appear. Click on " -NoNewline
+Write-Host "'Enter interpreter path...'" -ForegroundColor $CYAN
+Write-Host "4. Paste the following path into the input box and press Enter:"
+Write-Host "   $($VenvDir)\Scripts\python.exe" -ForegroundColor $CYAN
 Write-Host ""
-Write-Host "Next steps:" -ForegroundColor Cyan
-Write-Host "1. Open the folder $AnkimonDir in VS Code (File > Open Folder)." -ForegroundColor Cyan
-Write-Host ("2. In VS Code, press Ctrl+Shift+P, type Python - Select Interpreter, and set the path to {0}\Scripts\python.exe" -f $VenvDir) -ForegroundColor Cyan
-Write-Host "3. Start debugging: click the Run and Debug icon, choose Python Anki from the dropdown, and press Start." -ForegroundColor Cyan
-Write-Host 'If everything went well, Anki will open with your add-on loaded.' -ForegroundColor Cyan
+Write-Host "After this, you should see the correct Python version in the bottom-right corner of VS Code."
+Write-Host "The imports on your file (like import aqt) should also be resolved now."
 Write-Host ""
-Write-Host 'Please save the info above for future reference!' -ForegroundColor Cyan
+Write-Host "Press Enter once you have set the interpreter..." -NoNewline
+$null = Read-Host
+
+# --- STEP 3: Start Debugging ---
 Write-Host ""
-Write-Host 'Thanks for using the tool, hope it helps <3 - h0tp' -ForegroundColor Magenta
+Write-Host "--- STEP 3: Start Debugging ---" -ForegroundColor $YELLOW
+Write-Host "Now, let's launch Anki with the debugger attached."
+Write-Host "1. Click on the 'Run and Debug' icon in the left sidebar (it looks like a play button with a bug) (Ctrl+Shift+D)."
+Write-Host "2. At the top of the Run and Debug panel, you should see a green play button next to a dropdown."
+Write-Host "3. The dropdown should already say " -NoNewline
+Write-Host "'Python Anki'" -ForegroundColor $GREEN -NoNewline
+Write-Host ". If not, select it from the list."
+Write-Host "4. Click the green play button to start debugging."
+Write-Host ""
+Write-Host "Anki should now open with your Ankimon add-on loaded."
+Write-Host ""
+Write-Host "Press Enter once Anki has started..." -NoNewline
+$null = Read-Host
+
+# --- FINAL CONFIRMATION ---
+Write-Host ""
+Write-Host "=====================================================================" -ForegroundColor $GREEN
+Write-Host "  Congratulations! Your debugging environment is fully configured!" -ForegroundColor $GREEN
+Write-Host "=====================================================================" -ForegroundColor $GREEN
+Write-Host ""
+Write-Host "Here is a summary of your setup for future reference:"
+Write-Host "  - Add-on Source: " -NoNewline
+Write-Host "$AnkimonDir" -ForegroundColor $CYAN
+Write-Host "  - Virtual Env: " -NoNewline
+Write-Host "$VenvDir" -ForegroundColor $CYAN
+Write-Host "  - Interpreter Path: " -NoNewline
+Write-Host "$($VenvDir)\Scripts\python.exe" -ForegroundColor $CYAN
+Write-Host "  - Anki Data Directory: " -NoNewline
+Write-Host "$AnkiBase" -ForegroundColor $CYAN
+Write-Host ""
+Write-Host "Thanks for using the tool, hope it helps <3 - h0tp" -ForegroundColor $MAGENTA
 Write-Host ""
