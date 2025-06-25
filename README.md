@@ -11,7 +11,7 @@ VSCode setup for debugging Anki add-ons, making add-on development more efficien
 Made by @h0tp-ftw, based on the work of @RisingOrange
 
 - 🔍 **Live Debugging**: Set breakpoints and inspect variables in real-time
-- ⚡ **Hot Reloading**: Make code changes directly in VS Code while testing in Anki
+- ⚡ **Quick Testing**: Make code changes directly in VS Code and quickly restart Anki (no hot reloading)
 - 🌿 **Branch Switching**: Easily switch between branches, tags or versions of your add-on
 - 🌐 **Cross-Platform**: Works on Windows, macOS, and Linux
 
