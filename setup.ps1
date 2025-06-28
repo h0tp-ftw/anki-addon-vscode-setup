@@ -18,6 +18,11 @@ Write-Host ""
 
 $ErrorActionPreference = 'Stop'
 
+$YELLOW  = 'Yellow'
+$CYAN    = 'Cyan'
+$GREEN   = 'Green'
+$MAGENTA = 'Magenta'
+
 # Check for Administrator privileges
 $IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $IsAdmin) {
